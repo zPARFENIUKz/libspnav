@@ -92,7 +92,7 @@ int main(void)
     for (;;)
     {
         if(spnav_open() == -1) {
-            return -1;
+            printf("Ошибка при spnav_open()\n");
         }
         if (spnav_dev_name(buf, sizeof buf) != -1)
         {
