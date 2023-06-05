@@ -90,7 +90,7 @@ int main(void)
 
     for (;;)
     {
-        if (spacenav_dev_name(buf, sizeof buf) != -1)
+        if (spnav_dev_name(buf, sizeof buf) != -1)
         {
             if (!is_printed_about_device)
             {
@@ -133,7 +133,7 @@ int main(void)
        			redisplay = 0;
        		}
 
-       		if (spacenav_dev_name(buf, sizeof buf) != -1)
+       		if (spnav_dev_name(buf, sizeof buf) != -1)
        		{
        		    is_program_window_created = false;
        		    XCloseDisplay(dpy);
