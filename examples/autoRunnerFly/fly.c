@@ -91,7 +91,7 @@ bool prepareForDemo()
     	maxfd = xsock > ssock ? xsock : ssock;
 }
 
-void runDemo()
+void runDemo(spnav_event sev)
 {
     for(;;) {
     		fd_set rdset;
