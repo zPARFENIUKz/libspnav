@@ -70,7 +70,7 @@ bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event *sev)
 {
     if(spnav_wait_event(sev))
     {
-        if (sev.type == SPNAV_EVENT_BUTTON)
+        if (sev->type == SPNAV_EVENT_BUTTON)
         {
             initWindow();
             return true;
