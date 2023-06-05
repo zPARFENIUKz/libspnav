@@ -64,25 +64,81 @@ void initWindow(void) {
 	glEnable(GL_CULL_FACE);
 }
 
+bool try_get_event_and_if_any_button_was_clicked_create_window(void)
+{
+    spnav_event sev;
+    if(spnav_wait_event(&sev))
+    {
+        if (ser.type == SPNAV_EVENT_BUTTON)
+        {
+            initWindow();
+            return true;
+        }
+    }
+    return false;
+}
+
 
 int main(void)
 {
-    initWindow();
-	for(;;) {
-		XEvent xev;
-		XNextEvent(dpy, &xev);
+    bool is_printed_about_device = false;
+    bool is_printed_about_insert_device = false;
+    bool is_program_window_created = false;
+    char buf[256];
 
-		if(handle_event(&xev) != 0) {
-			destroy_gfx();
-			XCloseDisplay(dpy);
-			return 0;
-		}
+    for (;;)
+    {
+        if (spacenav_dev_name(buf, sizeof buf) != -1)
+        {
+            if (!is_printed_about_device)
+            {
+                printf("Устройство: %s\n", buf);
+                printf("Нажмите на любую кнопку устройства для продолжения...");
+                is_printed_about_device = true;
+                is_printed_about_insert_device = false;
+                continue;
+            }
+            if (!is_program_window_created)
+            {
+                is_program_window_created = try_get_event_and_if_any_button_was_clicked_create_window();
+            }
+        } else
+        {
+            if (!is_printed_about_insert_device)
+            {
+                printf("Подключите устройство...");
+                is_printed_about_insert_device = true;
+                is_printed_about_device = false;
+            }
+            continue;
+        }
+        /*cube in window processing*/
+        for(;;)
+        {
+       		XEvent xev;
+       		XNextEvent(dpy, &xev);
 
-		if(redisplay) {
-			redraw();
-			redisplay = 0;
-		}
-	}
+    		if(handle_event(&xev) != 0)
+    		{
+        		destroy_gfx();
+        		XCloseDisplay(dpy);
+        		is_program_window_created = false;
+       		}
+
+       		if(redisplay)
+       		{
+       			redraw();
+       			redisplay = 0;
+       		}
+
+       		if (spacenav_dev_name(buf, sizeof buf) != -1)
+       		{
+       		    is_program_window_created = false;
+       		    XCloseDisplay(dpy);
+       		}
+       	}
+    }
+
 	return 0;
 }
 
