@@ -78,10 +78,10 @@ int main(void)
     /* XXX: spnav_x11_open registers our window with the driver for receiving
     * motion/button events through the 3dxsrv-compatible X11 magellan protocol.
    	*/
-   	/*if(spnav_x11_open(dpy, win) == -1) {
+   	if(spnav_x11_open(dpy, win) == -1) {
    		fprintf(stderr, "failed to connect to the space navigator daemon\n");
    		return 1;
-    }*/
+    }
 
     if(spnav_open() == -1)
     {

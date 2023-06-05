@@ -15,6 +15,7 @@
 #include <GL/glx.h>
 #include <spnav.h>
 #include "xwin.h"
+#include <stdbool.h>
 
 #define GRID_REP	60
 #define GRID_SZ		200
@@ -36,140 +37,132 @@ struct spnav_posrot posrot;
 
 unsigned int grid_tex, box_tex;
 unsigned int scene;
+bool isPrintedAboutDevice = false;
+bool isPrintedAboutConnectDevice = false;
+int xsock, ssock, maxfd;
+char buf[256];
 
-void initWindow(void)
-{
-	if(!(dpy = XOpenDisplay(0))) {
-		fprintf(stderr, "failed to connect to the X server");
-		return 1;
-	}
-
-	if(create_xwin("libspnav fly", 1024, 768) == -1) {
-		return 1;
-	}
-
-	/* XXX: open connection to the spacenav driver */
-	if(spnav_open() == -1) {
-		fprintf(stderr, "failed to connect to the spacenav driver\n");
-		return 1;
-	}
-	/* XXX: initialize the position vector & orientation quaternion */
-	spnav_posrot_init(&posrot);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, GRID_SZ / 4);
-	glFogf(GL_FOG_END, GRID_SZ);
-
-	gen_textures();
-	gen_scene();
+bool tryToPrintDevice(char *buf) {
+    if (spnav_dev_name(buf, sizeof buf) == -1) return false;
+    if (isPrintedAboutDevice) return true;
+    printf("Устройство: %s\n", buf);
+    printf("Нажмите на любую кнопку устройства для продолжения...\n");
+    isPrintedAboutDevice = true;
+    isPrintedAboutConnectDevice = false;
 }
 
-bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event *sev)
+bool tryToPrintConnectDeviceMessage()
 {
-    if(spnav_wait_event(sev))
-    {
-        if (sev->type == SPNAV_EVENT_BUTTON)
-        {
-            initWindow();
-            return true;
-        }
-    }
-    return false;
+    if (isPrintedAboutConnectDevice) return true;
+    printf("Подключите устройство...\n");
+    isPrintedAboutConnectDevice = true;
+    isPrintedAboutDevice = false;
 }
 
-
-int main(void)
+bool prepareForDemo()
 {
-    int xsock, ssock, maxfd;
-    /* XXX: grab the Xlib socket and the libspnav socket. we'll need them in the
+    if(!(dpy = XOpenDisplay(0))) {
+    		fprintf(stderr, "failed to connect to the X server");
+    		return 1;
+    	}
+
+    	if(create_xwin("libspnav fly", 1024, 768) == -1) {
+    		return 1;
+    	}
+
+    	/* XXX: open connection to the spacenav driver */
+    	if(spnav_open() == -1) {
+    		fprintf(stderr, "failed to connect to the spacenav driver\n");
+    		return 1;
+    	}
+    	/* XXX: initialize the position vector & orientation quaternion */
+    	spnav_posrot_init(&posrot);
+
+    	glEnable(GL_DEPTH_TEST);
+    	glEnable(GL_CULL_FACE);
+
+    	glFogi(GL_FOG_MODE, GL_LINEAR);
+    	glFogf(GL_FOG_START, GRID_SZ / 4);
+    	glFogf(GL_FOG_END, GRID_SZ);
+
+    	gen_textures();
+    	gen_scene();
+
+    	/* XXX: grab the Xlib socket and the libspnav socket. we'll need them in the
     	 * select loop to wait for input from either source.
     	 */
-    xsock = ConnectionNumber(dpy);		/* Xlib socket */
-   	ssock = spnav_fd();					/* libspnav socket */
-   	maxfd = xsock > ssock ? xsock : ssock;
-	/*мое*/
-	spnav_event sev;
+    	xsock = ConnectionNumber(dpy);		/* Xlib socket */
+    	ssock = spnav_fd();					/* libspnav socket */
+    	maxfd = xsock > ssock ? xsock : ssock;
+}
+
+void runDemo()
+{
+    for(;;) {
+    		fd_set rdset;
+
+    		/* XXX: add both sockets to the file descriptor set, to monitor both */
+    		FD_ZERO(&rdset);
+    		FD_SET(xsock, &rdset);
+    		FD_SET(ssock, &rdset);
+
+    		while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
+
+    		/* XXX: handle any pending X events */
+    		if(FD_ISSET(xsock, &rdset)) {
+    			while(XPending(dpy)) {
+    				XEvent xev;
+    				XNextEvent(dpy, &xev);
+
+    				if(handle_xevent(&xev) != 0) {
+    					goto end;
+    				}
+    				if (!tryToPrintDevice(buf))
+    				{
+    				    goto end;
+    				}
+    			}
+    		}
+
+    		/* XXX: handle any pending spacenav events */
+    		if(FD_ISSET(ssock, &rdset)) {
+    			spnav_event sev;
+    			while(spnav_poll_event(&sev)) {
+    				handle_spnav_event(&sev);
+    			}
+    		}
+
+    		if(redisplay_pending) {
+    			redisplay_pending = 0;
+    			redraw();
+    		}
+    	}
+
+    end:
+    	glDeleteTextures(1, &grid_tex);
+    	destroy_xwin();
+    	spnav_close();
+}
+int main(void)
+{
+    spnav_event sev;
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
     bool is_program_window_created = false;
 
-
     for (;;)
     {
-        char buf[256];
-        if (spnav_dev_name(buf, sizeof buf) != -1)
+        if (tryToPrintDevice(buf))
         {
-            if (!is_printed_about_device)
-            {
-                printf("Устройство: %s\n", buf);
-                printf("Нажмите на любую кнопку устройства для продолжения...\n");
-                is_printed_about_device = true;
-                is_printed_about_insert_device = false;
-                continue;
-            }
-            if (!is_program_window_created)
-            {
-                is_program_window_created = try_get_event_and_if_any_button_was_clicked_create_window(&sev);
-                if (!is_program_window_created) continue;
-            }
-            /*buf[0] = '\0';*/
+            if (!prepareForDemo()) continue;
         } else
         {
-            /*buf[0] = '\0';*/
-            if (!is_printed_about_insert_device)
-            {
-                printf("Подключите устройство...\n");
-                is_printed_about_insert_device = true;
-                is_printed_about_device = false;
-            }
+            tryToPrintConnectDeviceMessage();
             continue;
         }
-        /*fly in window processing*/
-        for(;;) {
-        		fd_set rdset;
-
-            	/* XXX: add both sockets to the file descriptor set, to monitor both */
-            	FD_ZERO(&rdset);
-           		FD_SET(xsock, &rdset);
-           		FD_SET(ssock, &rdset);
-
-           		while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
-
-           		/* XXX: handle any pending X events */
-           		if(FD_ISSET(xsock, &rdset)) {
-           			while(XPending(dpy)) {
-           				XEvent xev;
-           				XNextEvent(dpy, &xev);
-
-           				if(handle_xevent(&xev) != 0) {
-           					goto end;
-           				}
-            		}
-            	}
-
-            	/* XXX: handle any pending spacenav events */
-           		if(FD_ISSET(ssock, &rdset)) {
-           			spnav_event sev;
-           			while(spnav_poll_event(&sev)) {
-           				handle_spnav_event(&sev);
-            		}
-            	}
-
-            	if(redisplay_pending) {
-           			redisplay_pending = 0;
-           			redraw();
-           		}
-           	}
-        end:
-        	glDeleteTextures(1, &grid_tex);
-        	destroy_xwin();
-        	spnav_close();
+        runDemo(&sev);
     }
-
-	return 0;
+    return 0;
 }
 
 void gen_textures(void)
