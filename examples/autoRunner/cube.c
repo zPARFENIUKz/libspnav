@@ -43,10 +43,6 @@ struct spnav_posrot posrot;
 int redisplay;
 
 void initWindow(void) {
-    if(!(dpy = XOpenDisplay(0))) {
-		fprintf(stderr, "failed to connect to the X server");
-		return 1;
-	}
 
 	if(create_gfx(512, 512) == -1) {
 		return 1;
@@ -75,7 +71,10 @@ bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event *sev)
 
 int main(void)
 {
-
+    if(!(dpy = XOpenDisplay(0))) {
+    		fprintf(stderr, "failed to connect to the X server");
+    		return 1;
+    }
     /* XXX: spnav_x11_open registers our window with the driver for receiving
     * motion/button events through the 3dxsrv-compatible X11 magellan protocol.
    	*/
