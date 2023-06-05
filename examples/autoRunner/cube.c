@@ -83,6 +83,10 @@ bool try_get_event_and_if_any_button_was_clicked_create_window(void)
 
 int main(void)
 {
+    if(spnav_open() == -1) {
+        return -1;
+    }
+
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
     bool is_program_window_created = false;
