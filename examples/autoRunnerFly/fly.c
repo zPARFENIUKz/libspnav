@@ -143,7 +143,7 @@ void openConnection()
 {
     /* XXX: open connection to the spacenav driver */
        	if(spnav_open() == -1) {
-       		fprintf(stderr, "failed to connect to the spacenav driver\n");
+
         }
 }
 int main(void)
