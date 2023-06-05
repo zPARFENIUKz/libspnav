@@ -83,9 +83,6 @@ bool try_get_event_and_if_any_button_was_clicked_create_window(void)
 
 int main(void)
 {
-    if(spnav_open() == -1) {
-        return -1;
-    }
 
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
@@ -94,12 +91,15 @@ int main(void)
 
     for (;;)
     {
+        if(spnav_open() == -1) {
+            return -1;
+        }
         if (spnav_dev_name(buf, sizeof buf) != -1)
         {
             if (!is_printed_about_device)
             {
                 printf("Устройство: %s\n", buf);
-                printf("Нажмите на любую кнопку устройства для продолжения...");
+                printf("Нажмите на любую кнопку устройства для продолжения...\n");
                 is_printed_about_device = true;
                 is_printed_about_insert_device = false;
                 continue;
@@ -114,7 +114,7 @@ int main(void)
             buf[0] = '\0';
             if (!is_printed_about_insert_device)
             {
-                printf("Подключите устройство...");
+                printf("Подключите устройство...\n");
                 is_printed_about_insert_device = true;
                 is_printed_about_device = false;
             }
