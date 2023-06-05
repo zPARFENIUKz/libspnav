@@ -50,6 +50,7 @@ bool tryToPrintDevice() {
     printf("Нажмите на любую кнопку устройства для продолжения...\n");
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
+    return true;
 }
 
 bool tryToPrintConnectDeviceMessage()
