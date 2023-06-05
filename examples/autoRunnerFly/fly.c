@@ -46,6 +46,7 @@ spnav_event sev;
 bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
+    system("clear");
     printf("Устройство: %s\n", buf);
     printf("Нажмите на любую кнопку устройства для продолжения...\n");
     isPrintedAboutDevice = true;
@@ -56,6 +57,7 @@ bool tryToPrintDevice() {
 bool tryToPrintConnectDeviceMessage()
 {
     if (isPrintedAboutConnectDevice) return true;
+    system("clear");
     printf("Подключите устройство...\n");
     isPrintedAboutConnectDevice = true;
     isPrintedAboutDevice = false;
