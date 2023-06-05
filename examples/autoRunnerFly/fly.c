@@ -58,6 +58,7 @@ bool tryToPrintConnectDeviceMessage()
     printf("Подключите устройство...\n");
     isPrintedAboutConnectDevice = true;
     isPrintedAboutDevice = false;
+    return false;
 }
 
 bool prepareForDemo()
@@ -90,6 +91,7 @@ bool prepareForDemo()
     	xsock = ConnectionNumber(dpy);		/* Xlib socket */
     	ssock = spnav_fd();					/* libspnav socket */
     	maxfd = xsock > ssock ? xsock : ssock;
+    	return true;
 }
 
 void runDemo()
@@ -150,11 +152,6 @@ void openConnection()
 int main(void)
 {
 
-    spnav_event sev;
-    bool is_printed_about_device = false;
-    bool is_printed_about_insert_device = false;
-    bool is_program_window_created = false;
-
     for (;;)
     {
         openConnection();
@@ -166,7 +163,7 @@ int main(void)
             tryToPrintConnectDeviceMessage();
             continue;
         }
-        runDemo(&sev);
+        runDemo();
     }
     return 0;
 }
