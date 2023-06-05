@@ -16,6 +16,7 @@
 #include <GL/glx.h>
 #include <spnav.h>
 #include <stdbool.h>
+#include <signal.h>
 
 #define SQ(x)	((x) * (x))
 
