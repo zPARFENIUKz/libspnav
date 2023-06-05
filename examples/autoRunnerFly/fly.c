@@ -70,11 +70,6 @@ bool prepareForDemo()
     		return 1;
     	}
 
-    	/* XXX: open connection to the spacenav driver */
-    	if(spnav_open() == -1) {
-    		fprintf(stderr, "failed to connect to the spacenav driver\n");
-    		return 1;
-    	}
     	/* XXX: initialize the position vector & orientation quaternion */
     	spnav_posrot_init(&posrot);
 
@@ -143,8 +138,17 @@ void runDemo()
     	destroy_xwin();
     	spnav_close();
 }
+
+void openConnection()
+{
+    /* XXX: open connection to the spacenav driver */
+       	if(spnav_open() == -1) {
+       		fprintf(stderr, "failed to connect to the spacenav driver\n");
+        }
+}
 int main(void)
 {
+
     spnav_event sev;
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
@@ -152,6 +156,7 @@ int main(void)
 
     for (;;)
     {
+        openConnection();
         if (tryToPrintDevice(buf))
         {
             if (!prepareForDemo()) continue;
