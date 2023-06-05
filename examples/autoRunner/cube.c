@@ -111,10 +111,10 @@ int main(void)
             {
                 is_program_window_created = try_get_event_and_if_any_button_was_clicked_create_window();
             }
-            buf[0] = '\0';
+            /*buf[0] = '\0';*/
         } else
         {
-            buf[0] = '\0';
+            /*buf[0] = '\0';*/
             if (!is_printed_about_insert_device)
             {
                 printf("Подключите устройство...\n");
