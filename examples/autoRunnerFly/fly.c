@@ -65,11 +65,11 @@ bool prepareForDemo()
 {
     if(!(dpy = XOpenDisplay(0))) {
     		fprintf(stderr, "failed to connect to the X server");
-    		return 1;
+    		return false;
     	}
 
     	if(create_xwin("libspnav fly", 1024, 768) == -1) {
-    		return 1;
+    		return false;
     	}
 
     	/* XXX: initialize the position vector & orientation quaternion */
@@ -149,6 +149,18 @@ void openConnection()
 
         }
 }
+
+bool buttonWasPressed()
+{
+    if(spnav_wait_event(sev))
+        {
+            if (sev->type == SPNAV_EVENT_BUTTON)
+            {
+                return true;
+            }
+        }
+        return false;
+}
 int main(void)
 {
 
@@ -157,7 +169,14 @@ int main(void)
         openConnection();
         if (tryToPrintDevice())
         {
-            if (!prepareForDemo()) continue;
+            if (buttonWasPressed())
+            {
+                prepareForDemo();
+            } else
+            {
+                continue;
+            }
+
         } else
         {
             tryToPrintConnectDeviceMessage();
