@@ -52,13 +52,6 @@ void initWindow(void) {
 		return 1;
 	}
 
-	/* XXX: spnav_x11_open registers our window with the driver for receiving
-	 * motion/button events through the 3dxsrv-compatible X11 magellan protocol.
-	 */
-	if(spnav_x11_open(dpy, win) == -1) {
-		fprintf(stderr, "failed to connect to the space navigator daemon\n");
-		return 1;
-	}
 	/* XXX: initialize the position vector & orientation quaternion */
 	spnav_posrot_init(&posrot);
 
@@ -82,6 +75,15 @@ bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event *sev)
 
 int main(void)
 {
+
+    /* XXX: spnav_x11_open registers our window with the driver for receiving
+    * motion/button events through the 3dxsrv-compatible X11 magellan protocol.
+   	*/
+   	if(spnav_x11_open(dpy, win) == -1) {
+   		fprintf(stderr, "failed to connect to the space navigator daemon\n");
+   		return 1;
+    }
+
     spnav_event sev;
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
