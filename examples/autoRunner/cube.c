@@ -83,16 +83,17 @@ int main(void)
    		return 1;
     }
 
+    if(spnav_open() == -1)
+    {
+        printf("Ошибка при spnav_open()\n");
+        return -1;
+    }
+
     spnav_event sev;
     bool is_printed_about_device = false;
     bool is_printed_about_insert_device = false;
     bool is_program_window_created = false;
 
-    /*if(spnav_open() == -1)
-    {
-        printf("Ошибка при spnav_open()\n");
-        return -1;
-    }*/
 
     for (;;)
     {
