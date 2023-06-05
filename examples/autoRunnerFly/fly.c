@@ -43,7 +43,8 @@ int xsock, ssock, maxfd;
 char buf[256];
 spnav_event sev;
 
-bool tryToPrintDevice() {buf, sizeof buf) == -1) return false;
+bool tryToPrintDevice() {
+    if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
     printf("Устройство: %s\n", buf);
     printf("Нажмите на любую кнопку устройства для продолжения...\n");
