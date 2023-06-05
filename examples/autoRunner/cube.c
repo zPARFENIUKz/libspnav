@@ -66,9 +66,9 @@ void initWindow(void) {
 	glEnable(GL_CULL_FACE);
 }
 
-bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event &sev)
+bool try_get_event_and_if_any_button_was_clicked_create_window(spnav_event& sev)
 {
-    if(spnav_wait_event(&sev))
+    if(spnav_wait_event(sev))
     {
         if (sev.type == SPNAV_EVENT_BUTTON)
         {
@@ -108,7 +108,7 @@ int main(void)
             }
             if (!is_program_window_created)
             {
-                is_program_window_created = try_get_event_and_if_any_button_was_clicked_create_window(sev);
+                is_program_window_created = try_get_event_and_if_any_button_was_clicked_create_window(&sev);
                 if (!is_program_window_created) continue;
             }
             /*buf[0] = '\0';*/
