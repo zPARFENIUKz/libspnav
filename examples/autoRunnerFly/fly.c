@@ -64,11 +64,12 @@ bool tryToPrintConnectDeviceMessage()
 bool prepareForDemo()
 {
     if(!(dpy = XOpenDisplay(0))) {
-    		fprintf(stderr, "failed to connect to the X server");
+    		printf("failed to connect to the X server");
     		return false;
     	}
 
     	if(create_xwin("libspnav fly", 1024, 768) == -1) {
+    	    printf("create_xwin failed");
     		return false;
     	}
 
