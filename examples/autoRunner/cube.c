@@ -83,11 +83,11 @@ int main(void)
    		return 1;
     }
 
-    if(spnav_open() == -1)
+    /*if(spnav_open() == -1)
     {
         printf("Ошибка при spnav_open()\n");
         return -1;
-    }
+    }*/
 
     spnav_event sev;
     bool is_printed_about_device = false;
@@ -98,7 +98,7 @@ int main(void)
     for (;;)
     {
         char buf[256];
-        if (spnav_dev_name(buf, sizeof buf) != -1)
+        if (spnav_x11_dev_name(buf, sizeof buf) != -1)
         {
             if (!is_printed_about_device)
             {
@@ -144,7 +144,7 @@ int main(void)
        			redisplay = 0;
        		}
 
-       		if (spnav_dev_name(buf, sizeof buf) != -1)
+       		if (spnav_x11_dev_name(buf, sizeof buf) != -1)
        		{
        		    is_program_window_created = false;
        		    XCloseDisplay(dpy);
