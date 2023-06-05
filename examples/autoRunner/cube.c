@@ -89,11 +89,14 @@ int main(void)
     bool is_program_window_created = false;
     char buf[256];
 
+    if(spnav_open() == -1)
+    {
+        printf("Ошибка при spnav_open()\n");
+        return -1;
+    }
+
     for (;;)
     {
-        if(spnav_open() == -1) {
-            printf("Ошибка при spnav_open()\n");
-        }
         if (spnav_dev_name(buf, sizeof buf) != -1)
         {
             if (!is_printed_about_device)
