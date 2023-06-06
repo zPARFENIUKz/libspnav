@@ -18,7 +18,7 @@
 #include <stdbool.h>
 
 #define GRID_REP	60
-#define GRID_SZ		200
+#define GRID_SZ		2000
 
 void gen_textures(void);
 void gen_scene(void);
@@ -305,7 +305,7 @@ void gen_scene(void)
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(0.07, 0.3, 0.9);
 	glVertex3f(0, GRID_SZ/5, 0);
-	glColor3f(0.5, 0.6, 0.1);
+	glColor3f(0.5, 0.2, 0.05);
 	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
 	glVertex3f(GRID_SZ, 0, -GRID_SZ);
 	glVertex3f(GRID_SZ, 0, GRID_SZ);
