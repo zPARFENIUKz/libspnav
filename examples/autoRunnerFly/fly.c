@@ -47,7 +47,17 @@ bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
     system("clear");
+    int i;
+    for (i = 0; i < 20; ++i) {
+        printf("\n");
+    }
+    for (i = 0; i < 5; ++i) {
+        printf("\t");
+    }
     printf("Устройство: %s\n", buf);
+    for (i = 0; i < 5; ++i) {
+            printf("\t");
+    }
     printf("Нажмите на любую кнопку устройства для продолжения...\n");
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
@@ -58,6 +68,12 @@ bool tryToPrintConnectDeviceMessage()
 {
     if (isPrintedAboutConnectDevice) return true;
     system("clear");
+    for (i = 0; i < 20; ++i) {
+            printf("\n");
+        }
+    for (i = 0; i < 5; ++i) {
+            printf("\t");
+    }
     printf("Подключите устройство...\n");
     isPrintedAboutConnectDevice = true;
     isPrintedAboutDevice = false;
