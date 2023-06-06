@@ -278,63 +278,15 @@ void gen_scene(void)
 
 
 	glDisable(GL_TEXTURE_2D);
-	/*glDisable(GL_FOG);*/
+	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	int i = 0, j = 0, k = 0;
-    for (i = 0; i < 2; ++i) {
-        for (j = 0; j < 2; ++j) {
-                for (k = 0; k < 2; ++k) {
-                       /*cube*/
-                        glBegin(GL_QUADS);
-                       	/* face +Z */
-                       	glNormal3f(0, 0, 1);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(-1 + i, -1 + j, 1 + k);
-                       	glVertex3f(1 + i, -1 + j, 1 + k);
-                       	glVertex3f(1 + i, 1 + j, 1 + k);
-                       	glVertex3f(-1 + i, 1 + j, 1 + k);
-                       	/* face +X */
-                       	glNormal3f(1, 0, 0);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(1 + i, -1 + j, 1 + k);
-                       	glVertex3f(1 + i, -1 + j, -1 + k);
-                       	glVertex3f(1 + i, 1 + j, -1 + k);
-                       	glVertex3f(1 + i, 1 + j, 1 + k);
-                       	/* face -Z */
-                       	glNormal3f(0, 0, -1);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(1 + i, -1 + j, -1 + k);
-                       	glVertex3f(-1 + i, -1 + j, -1 + k);
-                       	glVertex3f(-1 + i, 1 + j, -1 + k);
-                       	glVertex3f(1 + i, 1 + j, -1 + k);
-                       	/* face -X */
-                       	glNormal3f(-1, 0, 0);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(-1 + i, -1 + j, -1 + k);
-                       	glVertex3f(-1 + i, -1 + j, 1 + k);
-                       	glVertex3f(-1 + i, 1 + j, 1 + k);
-                       	glVertex3f(-1 + i, 1 + j, -1 + k);
-                       	/* face +Y */
-                       	glNormal3f(0, 1, 0);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(-1 + i, 1 + j, 1 + k);
-                       	glVertex3f(1 + i, 1 + j, 1 + k);
-                       	glVertex3f(1 + i, 1 + j, -1 + k);
-                       	glVertex3f(-1 + i, 1 + j, -1 + k);
-                       	/* face -Y */
-                       	glNormal3f(0, -1, 0);
-                       	glColor3f(1, 1, 1);
-                       	glVertex3f(-1 + i, -1 + j, -1 + k);
-                       	glVertex3f(1 + i, -1 + j, -1 + k);
-                       	glVertex3f(1 + i, -1 + j, 1 + k);
-                       	glVertex3f(-1 + i, -1 + j, 1 + k);
-                       	glEnd();
-                }
-        }
-    }
+
+    glutSolidTeapot(5);
     glEndList();
+
 }
 
 void redraw(void)
