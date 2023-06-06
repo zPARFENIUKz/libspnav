@@ -249,7 +249,6 @@ void gen_textures(void)
 
 void gen_scene(void)
 {
-	int i, j;
 	float x, y, h;
 
 	srand(0);
@@ -266,52 +265,58 @@ void gen_scene(void)
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-    /*cube*/
-    glBegin(GL_QUADS);
-	/* face +Z */
-	glNormal3f(0, 0, 1);
-	glColor3f(1, 0, 0);
-	glVertex3f(-1, -1, 1);
-	glVertex3f(1, -1, 1);
-	glVertex3f(1, 1, 1);
-	glVertex3f(-1, 1, 1);
-	/* face +X */
-	glNormal3f(1, 0, 0);
-	glColor3f(0, 1, 0);
-	glVertex3f(1, -1, 1);
-	glVertex3f(1, -1, -1);
-	glVertex3f(1, 1, -1);
-	glVertex3f(1, 1, 1);
-	/* face -Z */
-	glNormal3f(0, 0, -1);
-	glColor3f(0, 0, 1);
-	glVertex3f(1, -1, -1);
-	glVertex3f(-1, -1, -1);
-	glVertex3f(-1, 1, -1);
-	glVertex3f(1, 1, -1);
-	/* face -X */
-	glNormal3f(-1, 0, 0);
-	glColor3f(1, 1, 0);
-	glVertex3f(-1, -1, -1);
-	glVertex3f(-1, -1, 1);
-	glVertex3f(-1, 1, 1);
-	glVertex3f(-1, 1, -1);
-	/* face +Y */
-	glNormal3f(0, 1, 0);
-	glColor3f(0, 1, 1);
-	glVertex3f(-1, 1, 1);
-	glVertex3f(1, 1, 1);
-	glVertex3f(1, 1, -1);
-	glVertex3f(-1, 1, -1);
-	/* face -Y */
-	glNormal3f(0, -1, 0);
-	glColor3f(1, 0, 1);
-	glVertex3f(-1, -1, -1);
-	glVertex3f(1, -1, -1);
-	glVertex3f(1, -1, 1);
-	glVertex3f(-1, -1, 1);
-	glEnd();
-	glEndList();
+	int i = 0, j = 0;
+    for (i = 0; i < 3; ++i) {
+        for (j = 0; j < 3; ++j) {
+            /*cube*/
+                glBegin(GL_QUADS);
+            	/* face +Z */
+            	glNormal3f(0 + j, 0 + i, 1);
+            	glColor3f(1, 0, 0);
+            	glVertex3f(-1, -1, 1);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(1, 1, 1);
+            	glVertex3f(-1, 1, 1);
+            	/* face +X */
+            	glNormal3f(1 + j, 0 + i, 0);
+            	glColor3f(0, 1, 0);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(1, 1, -1);
+            	glVertex3f(1, 1, 1);
+            	/* face -Z */
+            	glNormal3f(0 + j, 0 + i, -1);
+            	glColor3f(0, 0, 1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(-1, 1, -1);
+            	glVertex3f(1, 1, -1);
+            	/* face -X */
+            	glNormal3f(-1 + j, 0 + i, 0);
+            	glColor3f(1, 1, 0);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(-1, -1, 1);
+            	glVertex3f(-1, 1, 1);
+            	glVertex3f(-1, 1, -1);
+            	/* face +Y */
+            	glNormal3f(0 + j, 1 + i, 0);
+            	glColor3f(0, 1, 1);
+            	glVertex3f(-1, 1, 1);
+            	glVertex3f(1, 1, 1);
+            	glVertex3f(1, 1, -1);
+            	glVertex3f(-1, 1, -1);
+            	/* face -Y */
+            	glNormal3f(0 + j, -1 + i, 0);
+            	glColor3f(1, 0, 1);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(-1, -1, 1);
+            	glEnd();
+            	glEndList();
+        }
+    }
+
 }
 
 void redraw(void)
