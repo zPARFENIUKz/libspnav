@@ -260,42 +260,8 @@ void gen_scene(void)
 	glEnable(GL_TEXTURE_2D);
 	/*glEnable(GL_FOG)*/;
 
-	/* grid */
-	glBindTexture(GL_TEXTURE_2D, grid_tex);
 
-	glBegin(GL_QUADS);
-	glColor3f(1, 1, 1);
-	glTexCoord2f(0, 0);
-	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-	glTexCoord2f(GRID_REP, 0);
-	glVertex3f(GRID_SZ, 0, GRID_SZ);
-	glTexCoord2f(GRID_REP, GRID_REP);
-	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-	glTexCoord2f(0, GRID_REP);
-	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-	glEnd();
 
-	/* buildings */
-	glBindTexture(GL_TEXTURE_2D, box_tex);
-	for(i=0; i<8; i++) {
-		for(j=0; j<8; j++) {
-			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-			y = (i - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-			h = (3.0f + (float)rand() / RAND_MAX) * 6.0f;
-
-			glPushMatrix();
-			glTranslatef(x, h/2, y);
-			glMatrixMode(GL_TEXTURE);
-			glLoadIdentity();
-			glScalef(3, h/4, 1);
-
-			draw_box(6, h, 6);
-
-			glLoadIdentity();
-			glMatrixMode(GL_MODELVIEW);
-			glPopMatrix();
-		}
-	}
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
