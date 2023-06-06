@@ -263,7 +263,7 @@ void gen_scene(void)
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
-	glTranslatef(0, 6, -6);	/* view matrix, push back to see the cube */
+	glTranslatef(0, 5, -6);	/* view matrix, push back to see the cube */
 
     /*cube*/
     glBegin(GL_QUADS);
@@ -321,11 +321,12 @@ void redraw(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glTranslatef(0, 5, -6);	/* view matrix, push back to see the cube */
 
 	/* XXX convert the accumulated position/rotation into a 4x4 view matrix */
-	spnav_matrix_view(xform, &posrot);
+	spnav_matrix_obj(xform, &posrot);
 	glMultMatrixf(xform);		/* concatenate our computed view matrix */
-	glTranslatef(0, -5, 0);		/* move the default view a bit higher above the ground */
+
 
 	glCallList(scene);
 
