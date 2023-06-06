@@ -290,7 +290,7 @@ void gen_scene(void)
         glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
         glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
 
-        glDrawElements(GL_TRIANGLES, 50, GL_UNSIGNED_INT, indices.data());
+        glDrawElements(GL_TRIANGLES, 1, GL_UNSIGNED_INT, 0);
 
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
