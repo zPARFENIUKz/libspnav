@@ -54,11 +54,11 @@ bool tryToPrintDevice() {
     for (i = 0; i < 5; ++i) {
         printf("\t");
     }
-    printf("Устройство: %s\n", buf);
+    printf("Device: %s\n", buf);
     for (i = 0; i < 5; ++i) {
             printf("\t");
     }
-    printf("Нажмите на любую кнопку устройства для продолжения...\n");
+    printf("Press any device button to continue...\n");
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
     return true;
@@ -75,7 +75,7 @@ bool tryToPrintConnectDeviceMessage()
     for (i = 0; i < 5; ++i) {
             printf("\t");
     }
-    printf("Подключите устройство...\n");
+    printf("Connect your device...\n");
     isPrintedAboutConnectDevice = true;
     isPrintedAboutDevice = false;
     return false;
@@ -278,58 +278,25 @@ void gen_scene(void)
 
 
 	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_FOG);
+	/*glDisable(GL_FOG);*/
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	/*glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );*/
 
-	int i = 0, j = 0, k = 0;
-    /*cube*/
-    glBegin(GL_QUADS);
-    /* face +Z */
-    glNormal3f(0, 0, 1);
-    glColor3f(1, 0, 0);
-    glVertex3f(-1 + i, -1 + j, 1 + k);
-    glVertex3f(1 + i, -1 + j, 1 + k);
-    glVertex3f(1 + i, 1 + j, 1 + k);
-    glVertex3f(-1 + i, 1 + j, 1 + k);
-    /* face +X */
-    glNormal3f(1, 0, 0);
-    glColor3f(0, 1, 0);
-    glVertex3f(1 + i, -1 + j, 1 + k);
-    glVertex3f(1 + i, -1 + j, -1 + k);
-    glVertex3f(1 + i, 1 + j, -1 + k);
-    glVertex3f(1 + i, 1 + j, 1 + k);
-    /* face -Z */
-    glNormal3f(0, 0, -1);
-    glColor3f(0, 0, 1);
-    glVertex3f(1 + i, -1 + j, -1 + k);
-    glVertex3f(-1 + i, -1 + j, -1 + k);
-    glVertex3f(-1 + i, 1 + j, -1 + k);
-    glVertex3f(1 + i, 1 + j, -1 + k);
-    /* face -X */
-    glNormal3f(-1, 0, 0);
-    glColor3f(1, 1, 0);
-    glVertex3f(-1 + i, -1 + j, -1 + k);
-    glVertex3f(-1 + i, -1 + j, 1 + k);
-    glVertex3f(-1 + i, 1 + j, 1 + k);
-    glVertex3f(-1 + i, 1 + j, -1 + k);
-    /* face +Y */
-    glNormal3f(0, 1, 0);
-    glColor3f(0, 1, 1);
-    glVertex3f(-1 + i, 1 + j, 1 + k);
-    glVertex3f(1 + i, 1 + j, 1 + k);
-    glVertex3f(1 + i, 1 + j, -1 + k);
-    glVertex3f(-1 + i, 1 + j, -1 + k);
-    /* face -Y */
-    glNormal3f(0, -1, 0);
-    glColor3f(1, 0, 1);
-    glVertex3f(-1 + i, -1 + j, -1 + k);
-    glVertex3f(1 + i, -1 + j, -1 + k);
-    glVertex3f(1 + i, -1 + j, 1 + k);
-    glVertex3f(-1 + i, -1 + j, 1 + k);
-    glEnd();
+	// interleaved array
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glVertexPointer(3, GL_FLOAT, interleavedStride, &interleavedVertices[0]);
+        glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
+        glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
+
+        glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
+
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
     glEndList();
-
 }
 
 void redraw(void)
