@@ -155,7 +155,7 @@ void openConnection()
 
 bool buttonWasPressed()
 {
-    if(spnav_wait_event(&sev))
+    if(spnav_poll_event(&sev))
         {
             if (sev.type == SPNAV_EVENT_BUTTON)
             {
