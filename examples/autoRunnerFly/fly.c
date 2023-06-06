@@ -263,7 +263,7 @@ void gen_scene(void)
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
-	glTranslatef(0, 0, -6);	/* view matrix, push back to see the cube */
+	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
 
     /*cube*/
     glBegin(GL_QUADS);
@@ -328,7 +328,7 @@ void redraw(void)
 	glMultMatrixf(xform);		/* concatenate our computed view matrix */
 
 
-	/*glCallList(scene);*/
+	glCallList(scene);
 	gen_scene();
 
 	glXSwapBuffers(dpy, win);
