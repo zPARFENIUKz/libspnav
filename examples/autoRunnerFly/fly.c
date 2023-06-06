@@ -283,9 +283,6 @@ void gen_scene(void)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	int i = 0, j = 0, k = 0;
-	float r = (float)(rand() % 255 / 255.0);
-	float g = (float)(rand() % 255 / 255.0);
-	float b = (float)(rand() % 255 / 255.0);
 	glBegin(GL_QUADS);
         for (i = 0; i < 9; ++i) {
             for (j = 0; j < 9; ++j) {
@@ -293,42 +290,42 @@ void gen_scene(void)
                            /*cube*/
                            	/* face +Z */
                            	glNormal3f(0, 0, 1);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-5 + i, -5 + j, -3 + k);
                            	glVertex3f(-3 + i, -5 + j, -3 + k);
                            	glVertex3f(-3 + i, -3 + j, -3 + k);
                            	glVertex3f(-5 + i, -3 + j, -3 + k);
                            	/* face +X */
                            	glNormal3f(1, 0, 0);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-3 + i, -5 + j, -3 + k);
                            	glVertex3f(-3 + i, -5 + j, -5 + k);
                            	glVertex3f(-3 + i, -3 + j, -5 + k);
                            	glVertex3f(-3 + i, -3 + j, -3 + k);
                            	/* face -Z */
                            	glNormal3f(0, 0, -1);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-3 + i, -5 + j, -5 + k);
                            	glVertex3f(-5 + i, -5 + j, -5 + k);
                            	glVertex3f(-5 + i, -3 + j, -5 + k);
                            	glVertex3f(-3 + i, -3 + j, -5 + k);
                            	/* face -X */
                            	glNormal3f(-1, 0, 0);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-5 + i, -5 + j, -5 + k);
                            	glVertex3f(-5 + i, -5 + j, -3 + k);
                            	glVertex3f(-5 + i, -3 + j, -3 + k);
                            	glVertex3f(-5 + i, -3 + j, -5 + k);
                            	/* face +Y */
                            	glNormal3f(0, 1, 0);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-5 + i, -3 + j, -3 + k);
                            	glVertex3f(-3 + i, -3 + j, -3 + k);
                            	glVertex3f(-3 + i, -3 + j, -5 + k);
                            	glVertex3f(-5 + i, -3 + j, -5 + k);
                            	/* face -Y */
                            	glNormal3f(0, -1, 0);
-                           	glColor3f(r, g, b);
+                           	glColor3f(1, 1, 1);
                            	glVertex3f(-5 + i, -5 + j, -5 + k);
                            	glVertex3f(-3 + i, -5 + j, -5 + k);
                            	glVertex3f(-3 + i, -5 + j, -3 + k);
