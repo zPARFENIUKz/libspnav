@@ -83,8 +83,8 @@ bool prepareForDemo()
     	glEnable(GL_CULL_FACE);
 
     	glFogi(GL_FOG_MODE, GL_LINEAR);
-    	glFogf(GL_FOG_START, GRID_SZ / 4);
-    	glFogf(GL_FOG_END, GRID_SZ);
+    	glFogf(GL_FOG_START, GRID_SZ * 5);
+    	glFogf(GL_FOG_END, GRID_SZ * 5);
 
     	gen_textures();
     	gen_scene();
