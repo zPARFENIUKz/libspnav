@@ -263,7 +263,7 @@ void gen_scene(void)
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
-	glTranslatef(0, 0, -12);	/* view matrix, push back to see the cube */
+	glTranslatef(0, 0, -25);	/* view matrix, push back to see the cube */
 
     /*cube*/
     glBegin(GL_QUADS);
