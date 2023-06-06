@@ -17,8 +17,8 @@
 #include "xwin.h"
 #include <stdbool.h>
 
-#define GRID_REP	60
-#define GRID_SZ		20
+#define GRID_REP	180
+#define GRID_SZ		200
 
 void gen_textures(void);
 void gen_scene(void);
@@ -83,8 +83,8 @@ bool prepareForDemo()
     	glEnable(GL_CULL_FACE);
 
     	glFogi(GL_FOG_MODE, GL_LINEAR);
-    	glFogf(GL_FOG_START, GRID_SZ * 5);
-    	glFogf(GL_FOG_END, GRID_SZ * 5);
+    	glFogf(GL_FOG_START, GRID_SZ / 4);
+    	glFogf(GL_FOG_END, GRID_SZ);
 
     	gen_textures();
     	gen_scene();
