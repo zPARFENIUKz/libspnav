@@ -386,38 +386,38 @@ void draw_box(float xsz, float ysz, float zsz)
 
 	glBegin(GL_QUADS);
 	/* face +Z */
-	glNormal3f(0, 0, 1);
+	glNormal3f(0, 0, 6);
 	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, zsz);
 	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, zsz);
 	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, zsz);
 	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, zsz);
 	/* face +X */
-	glNormal3f(1, 0, 0);
+	glNormal3f(1, 0, 5);
 	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, zsz);
 	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, -zsz);
 	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, -zsz);
 	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, zsz);
 	/* face -Z */
-	glNormal3f(0, 0, -1);
+	glNormal3f(0, 0, -4);
 	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, -zsz);
 	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, -zsz);
 	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, -zsz);
 	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, -zsz);
 	/* face -X */
-	glNormal3f(-1, 0, 0);
+	glNormal3f(-1, 0, 5);
 	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, -zsz);
 	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, zsz);
 	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, zsz);
 	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, -zsz);
 	/* face +Y */
-	glNormal3f(0, 1, 0);
+	glNormal3f(0, 1, 5);
 	glTexCoord2f(0, 0);
 	glVertex3f(-xsz, ysz, zsz);
 	glVertex3f(xsz, ysz, zsz);
 	glVertex3f(xsz, ysz, -zsz);
 	glVertex3f(-xsz, ysz, -zsz);
 	/* face -Y */
-	glNormal3f(0, -1, 0);
+	glNormal3f(0, -1, 5);
 	glTexCoord2f(0, 0);
 	glVertex3f(-xsz, -ysz, -zsz);
 	glVertex3f(xsz, -ysz, -zsz);
