@@ -291,45 +291,45 @@ void gen_scene(void)
                            	/* face +Z */
                            	glNormal3f(0, 0, 1);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(-1 + i, -1 + j, 1 + k);
-                           	glVertex3f(1 + i, -1 + j, 1 + k);
-                           	glVertex3f(1 + i, 1 + j, 1 + k);
-                           	glVertex3f(-1 + i, 1 + j, 1 + k);
+                           	glVertex3f(-11 + i, -11 + j, -9 + k);
+                           	glVertex3f(-9 + i, -11 + j, -9 + k);
+                           	glVertex3f(-9 + i, -9 + j, -9 + k);
+                           	glVertex3f(-11 + i, -9 + j, -9 + k);
                            	/* face +X */
                            	glNormal3f(1, 0, 0);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(1 + i, -1 + j, 1 + k);
-                           	glVertex3f(1 + i, -1 + j, -1 + k);
-                           	glVertex3f(1 + i, 1 + j, -1 + k);
-                           	glVertex3f(1 + i, 1 + j, 1 + k);
+                           	glVertex3f(-9 + i, -11 + j, -9 + k);
+                           	glVertex3f(-9 + i, -11 + j, -11 + k);
+                           	glVertex3f(-9 + i, -9 + j, -11 + k);
+                           	glVertex3f(-9 + i, -9 + j, -9 + k);
                            	/* face -Z */
                            	glNormal3f(0, 0, -1);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(1 + i, -1 + j, -1 + k);
-                           	glVertex3f(-1 + i, -1 + j, -1 + k);
-                           	glVertex3f(-1 + i, 1 + j, -1 + k);
-                           	glVertex3f(1 + i, 1 + j, -1 + k);
+                           	glVertex3f(-9 + i, -11 + j, -11 + k);
+                           	glVertex3f(-11 + i, -11 + j, -11 + k);
+                           	glVertex3f(-11 + i, -9 + j, -11 + k);
+                           	glVertex3f(-9 + i, -9 + j, -11 + k);
                            	/* face -X */
                            	glNormal3f(-1, 0, 0);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(-1 + i, -1 + j, -1 + k);
-                           	glVertex3f(-1 + i, -1 + j, 1 + k);
-                           	glVertex3f(-1 + i, 1 + j, 1 + k);
-                           	glVertex3f(-1 + i, 1 + j, -1 + k);
+                           	glVertex3f(-11 + i, -11 + j, -11 + k);
+                           	glVertex3f(-11 + i, -11 + j, -9 + k);
+                           	glVertex3f(-11 + i, -9 + j, -9 + k);
+                           	glVertex3f(-11 + i, -9 + j, -11 + k);
                            	/* face +Y */
                            	glNormal3f(0, 1, 0);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(-1 + i, 1 + j, 1 + k);
-                           	glVertex3f(1 + i, 1 + j, 1 + k);
-                           	glVertex3f(1 + i, 1 + j, -1 + k);
-                           	glVertex3f(-1 + i, 1 + j, -1 + k);
+                           	glVertex3f(-11 + i, -9 + j, -9 + k);
+                           	glVertex3f(-9 + i, -9 + j, -9 + k);
+                           	glVertex3f(-9 + i, -9 + j, -11 + k);
+                           	glVertex3f(-11 + i, -9 + j, -11 + k);
                            	/* face -Y */
                            	glNormal3f(0, -1, 0);
                            	glColor3f(1, 1, 1);
-                           	glVertex3f(-1 + i, -1 + j, -1 + k);
-                           	glVertex3f(1 + i, -1 + j, -1 + k);
-                           	glVertex3f(1 + i, -1 + j, 1 + k);
-                           	glVertex3f(-1 + i, -1 + j, 1 + k);
+                           	glVertex3f(-11 + i, -11 + j, -11 + k);
+                           	glVertex3f(-9 + i, -11 + j, -11 + k);
+                           	glVertex3f(-9 + i, -11 + j, -9 + k);
+                           	glVertex3f(-11 + i, -11 + j, -9 + k);
                     }
             }
         }
