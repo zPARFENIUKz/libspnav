@@ -336,11 +336,10 @@ void redraw(void)
 
 void reshape(int x, int y)
 {
-	glViewport(0, 0, x, y);
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(50.0, (float)x / (float)y, 0.5, 500.0);
+	gluPerspective(45.0, (float)x / (float)y, 1.0, 1000.0);
+	glViewport(0, 0, x, y);
 }
 
 void handle_spnav_event(spnav_event *ev)
