@@ -18,7 +18,7 @@
 #include <stdbool.h>
 
 #define GRID_REP	60
-#define GRID_SZ		2000
+#define GRID_SZ		20
 
 void gen_textures(void);
 void gen_scene(void);
