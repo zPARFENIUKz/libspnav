@@ -329,7 +329,7 @@ void redraw(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -6);	/* view matrix, push back to see the cube */
+	glTranslatef(1, 0, -9);	/* view matrix, push back to see the cube */
 
 	/* XXX convert the accumulated position/rotation into a 4x4 view matrix */
 	spnav_matrix_obj(xform, &posrot);
