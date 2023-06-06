@@ -3,6 +3,7 @@
 #include <X11/Xlib.h>
 #include <GL/glx.h>
 #include "xwin.h"
+#include <X11/Xatom.h>
 
 void reshape(int x, int y);
 void set_window_title(const char *title);
