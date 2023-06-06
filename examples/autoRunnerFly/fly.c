@@ -313,6 +313,10 @@ void gen_scene(void)
 	glEnd();
 
 	glEndList();*/
+	scene = glGenLists(1);
+    	glNewList(scene, GL_COMPILE);
+
+    	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
     	/* face +Z */
     	glNormal3f(0, 0, 1);
@@ -357,6 +361,8 @@ void gen_scene(void)
     	glVertex3f(1, -1, 1);
     	glVertex3f(-1, -1, 1);
     	glEnd();
+
+    	glEndList();
 }
 
 void redraw(void)
