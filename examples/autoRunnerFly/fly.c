@@ -303,9 +303,9 @@ void gen_scene(void)
 
 	/* skydome */
 	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(0.07, 0.1, 0.9);
+	glColor3f(0.07, 0.3, 0.9);
 	glVertex3f(0, GRID_SZ/5, 0);
-	glColor3f(0.5, 0.2, 0.05);
+	glColor3f(0.5, 0.6, 0.1);
 	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
 	glVertex3f(GRID_SZ, 0, -GRID_SZ);
 	glVertex3f(GRID_SZ, 0, GRID_SZ);
