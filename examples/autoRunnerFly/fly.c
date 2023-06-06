@@ -263,6 +263,7 @@ void gen_scene(void)
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
+	glTranslatef(0, 0, -6);	/* view matrix, push back to see the cube */
 
     /*cube*/
     glBegin(GL_QUADS);
@@ -386,38 +387,38 @@ void draw_box(float xsz, float ysz, float zsz)
 
 	glBegin(GL_QUADS);
 	/* face +Z */
-	glNormal3f(0, 0, 6);
+	glNormal3f(0, 0, 1);
 	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, zsz);
 	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, zsz);
 	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, zsz);
 	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, zsz);
 	/* face +X */
-	glNormal3f(1, 0, 5);
+	glNormal3f(1, 0, 0);
 	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, zsz);
 	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, -zsz);
 	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, -zsz);
 	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, zsz);
 	/* face -Z */
-	glNormal3f(0, 0, -4);
+	glNormal3f(0, 0, -1);
 	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, -zsz);
 	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, -zsz);
 	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, -zsz);
 	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, -zsz);
 	/* face -X */
-	glNormal3f(-1, 0, 5);
+	glNormal3f(-1, 0, 0);
 	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, -zsz);
 	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, zsz);
 	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, zsz);
 	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, -zsz);
 	/* face +Y */
-	glNormal3f(0, 1, 5);
+	glNormal3f(0, 1, 0);
 	glTexCoord2f(0, 0);
 	glVertex3f(-xsz, ysz, zsz);
 	glVertex3f(xsz, ysz, zsz);
 	glVertex3f(xsz, ysz, -zsz);
 	glVertex3f(-xsz, ysz, -zsz);
 	/* face -Y */
-	glNormal3f(0, -1, 5);
+	glNormal3f(0, -1, 0);
 	glTexCoord2f(0, 0);
 	glVertex3f(-xsz, -ysz, -zsz);
 	glVertex3f(xsz, -ysz, -zsz);
