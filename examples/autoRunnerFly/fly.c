@@ -283,7 +283,6 @@ void gen_scene(void)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	int i = 0, j = 0, k = 0;
-    int i = 0, j = 0, k = 0;
         for (i = 0; i < 9; ++i) {
             for (j = 0; j < 9; ++j) {
                     for (k = 0; k < 9; ++k) {
