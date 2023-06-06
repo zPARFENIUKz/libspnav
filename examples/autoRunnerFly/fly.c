@@ -261,22 +261,8 @@ void gen_scene(void)
 	/*glEnable(GL_FOG)*/;
 
 
-
-
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
-
-	/* skydome */
-	glBegin(GL_TRIANGLE_FAN);
-	glColor3f(0.07, 0.3, 0.9);
-	glVertex3f(0, GRID_SZ/5, 0);
-	glColor3f(0.5, 0.2, 0.05);
-	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-	glVertex3f(GRID_SZ, 0, GRID_SZ);
-	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-	glEnd();
 
     /*cube*/
     glBegin(GL_QUADS);
