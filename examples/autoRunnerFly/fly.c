@@ -259,7 +259,7 @@ void gen_scene(void)
 	glNewList(scene, GL_COMPILE);
 
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_FOG);
+	/*glEnable(GL_FOG)*/;
 
 	/* grid */
 	glBindTexture(GL_TEXTURE_2D, grid_tex);
