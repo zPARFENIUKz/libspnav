@@ -13,6 +13,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
+#include <GL/glut.h>
 #include <spnav.h>
 #include "xwin.h"
 #include <stdbool.h>
