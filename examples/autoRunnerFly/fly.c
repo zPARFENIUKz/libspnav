@@ -283,11 +283,11 @@ void gen_scene(void)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	int i = 0, j = 0, k = 0;
+	glBegin(GL_QUADS);
         for (i = 0; i < 9; ++i) {
             for (j = 0; j < 9; ++j) {
                     for (k = 0; k < 9; ++k) {
                            /*cube*/
-                            glBegin(GL_QUADS);
                            	/* face +Z */
                            	glNormal3f(0, 0, 1);
                            	glColor3f(1, 1, 1);
@@ -330,10 +330,10 @@ void gen_scene(void)
                            	glVertex3f(1 + i, -1 + j, -1 + k);
                            	glVertex3f(1 + i, -1 + j, 1 + k);
                            	glVertex3f(-1 + i, -1 + j, 1 + k);
-                           	glEnd();
                     }
             }
         }
+    glEnd();
     glEndList();
 }
 
@@ -345,7 +345,7 @@ void redraw(void)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0, 0, -6);	/* view matrix, push back to see the cube */
+	glTranslatef(0, 0, -20);	/* view matrix, push back to see the cube */
 
 	/* XXX convert the accumulated position/rotation into a 4x4 view matrix */
 	spnav_matrix_obj(xform, &posrot);
