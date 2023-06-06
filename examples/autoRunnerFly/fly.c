@@ -71,7 +71,7 @@ bool prepareForDemo()
     		return false;
     	}
 
-    	if(create_xwin("libspnav fly", 1024, 768) == -1) {
+    	if(create_xwin("libspnav fly", 1080, 1080) == -1) {
     	    printf("create_xwin failed");
     		return false;
     	}
@@ -128,7 +128,6 @@ void runDemo()
 
     		/* XXX: handle any pending spacenav events */
     		if(FD_ISSET(ssock, &rdset)) {
-    			spnav_event sev;
     			while(spnav_poll_event(&sev)) {
     				handle_spnav_event(&sev);
     			}
@@ -250,7 +249,7 @@ void gen_textures(void)
 
 void gen_scene(void)
 {
-	int i, j;
+	/*int i, j;
 	float x, y, h;
 
 	srand(0);
@@ -262,7 +261,7 @@ void gen_scene(void)
 	/*glEnable(GL_FOG)*/;
 
 	/* grid */
-	glBindTexture(GL_TEXTURE_2D, grid_tex);
+	/*glBindTexture(GL_TEXTURE_2D, grid_tex);
 
 	glBegin(GL_QUADS);
 	glColor3f(1, 1, 1);
@@ -277,7 +276,7 @@ void gen_scene(void)
 	glEnd();
 
 	/* buildings */
-	glBindTexture(GL_TEXTURE_2D, box_tex);
+	/*glBindTexture(GL_TEXTURE_2D, box_tex);
 	for(i=0; i<8; i++) {
 		for(j=0; j<8; j++) {
 			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
@@ -302,7 +301,7 @@ void gen_scene(void)
 	glDisable(GL_FOG);
 
 	/* skydome */
-	glBegin(GL_TRIANGLE_FAN);
+	/*glBegin(GL_TRIANGLE_FAN);
 	glColor3f(0.07, 0.3, 0.9);
 	glVertex3f(0, GRID_SZ/5, 0);
 	glColor3f(0.5, 0.2, 0.05);
@@ -313,7 +312,51 @@ void gen_scene(void)
 	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
 	glEnd();
 
-	glEndList();
+	glEndList();*/
+	glBegin(GL_QUADS);
+    	/* face +Z */
+    	glNormal3f(0, 0, 1);
+    	glColor3f(1, 0, 0);
+    	glVertex3f(-1, -1, 1);
+    	glVertex3f(1, -1, 1);
+    	glVertex3f(1, 1, 1);
+    	glVertex3f(-1, 1, 1);
+    	/* face +X */
+    	glNormal3f(1, 0, 0);
+    	glColor3f(0, 1, 0);
+    	glVertex3f(1, -1, 1);
+    	glVertex3f(1, -1, -1);
+    	glVertex3f(1, 1, -1);
+    	glVertex3f(1, 1, 1);
+    	/* face -Z */
+    	glNormal3f(0, 0, -1);
+    	glColor3f(0, 0, 1);
+    	glVertex3f(1, -1, -1);
+    	glVertex3f(-1, -1, -1);
+    	glVertex3f(-1, 1, -1);
+    	glVertex3f(1, 1, -1);
+    	/* face -X */
+    	glNormal3f(-1, 0, 0);
+    	glColor3f(1, 1, 0);
+    	glVertex3f(-1, -1, -1);
+    	glVertex3f(-1, -1, 1);
+    	glVertex3f(-1, 1, 1);
+    	glVertex3f(-1, 1, -1);
+    	/* face +Y */
+    	glNormal3f(0, 1, 0);
+    	glColor3f(0, 1, 1);
+    	glVertex3f(-1, 1, 1);
+    	glVertex3f(1, 1, 1);
+    	glVertex3f(1, 1, -1);
+    	glVertex3f(-1, 1, -1);
+    	/* face -Y */
+    	glNormal3f(0, -1, 0);
+    	glColor3f(1, 0, 1);
+    	glVertex3f(-1, -1, -1);
+    	glVertex3f(1, -1, -1);
+    	glVertex3f(1, -1, 1);
+    	glVertex3f(-1, -1, 1);
+    	glEnd();
 }
 
 void redraw(void)
