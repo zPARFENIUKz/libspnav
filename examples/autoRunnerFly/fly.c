@@ -100,7 +100,6 @@ bool prepareForDemo()
 
 void runDemo()
 {
-    system("xte 'keydown Alt_L' 'key F11' 'keyup Alt_L");
     for(;;) {
     		fd_set rdset;
 

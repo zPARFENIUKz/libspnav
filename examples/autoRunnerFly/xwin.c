@@ -62,6 +62,11 @@ int create_xwin(const char *title, int xsz, int ysz)
 	events = ExposureMask | StructureNotifyMask | KeyPressMask | KeyReleaseMask |
 		ButtonReleaseMask |	ButtonPressMask | PointerMotionMask;
 	XSelectInput(dpy, win, events);
+	Atom wm_state = XInternAtom (dpy, "_NET_WM_STATE", true);
+    Atom wm_fullscreen = XInternAtom (dpy, "_NET_WM_STATE_FULLSCREEN", true);
+
+    XChangeProperty(dpy, win, wm_state, XA_ATOM, 32,
+                    PropModeReplace, (unsigned char *)&wm_fullscreen, 1);
 
 	XSetWMProtocols(dpy, win, &wm_del_win, 1);
 
