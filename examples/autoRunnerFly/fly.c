@@ -357,7 +357,7 @@ void handle_spnav_event(spnav_event *ev)
 		ev->motion.rx /= 2;
 		ev->motion.ry /= 2;
 		ev->motion.rz /= 2;
-		spnav_posrot_moveview(&posrot, &ev->motion);
+		spnav_posrot_moveobj(&posrot, &ev->motion);
 
 		/* XXX: Drop any further pending motion events. This can make our input
 		 * more responsive on slow or heavily loaded machines. We don't gain
