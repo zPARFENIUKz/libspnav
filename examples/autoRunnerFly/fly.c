@@ -266,9 +266,9 @@ void gen_scene(void)
 	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
 	int i = 0, j = 0, k = 0;
-    for (i = 0; i < 3; ++i) {
-        for (j = 0; j < 3; ++j) {
-                for (k = 0; k < 3; ++k) {
+    for (i = 0; i < 2; ++i) {
+        for (j = 0; j < 2; ++j) {
+                for (k = 0; k < 2; ++k) {
                        /*cube*/
                         glBegin(GL_QUADS);
                        	/* face +Z */
