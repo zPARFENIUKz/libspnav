@@ -280,22 +280,60 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	/*glDisable(GL_FOG);*/
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
-	/*glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );*/
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-	// interleaved array
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glVertexPointer(3, GL_FLOAT, interleavedStride, &interleavedVertices[0]);
-        glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
-        glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
-
-        glDrawElements(GL_TRIANGLES, 1, GL_UNSIGNED_INT, 0);
-
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_NORMAL_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+	int i = 0, j = 0, k = 0;
+    for (i = 0; i < 2; ++i) {
+        for (j = 0; j < 2; ++j) {
+                for (k = 0; k < 2; ++k) {
+                       /*cube*/
+                        glBegin(GL_QUADS);
+                       	/* face +Z */
+                       	glNormal3f(0, 0, 1);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(-1 + i, -1 + j, 1 + k);
+                       	glVertex3f(1 + i, -1 + j, 1 + k);
+                       	glVertex3f(1 + i, 1 + j, 1 + k);
+                       	glVertex3f(-1 + i, 1 + j, 1 + k);
+                       	/* face +X */
+                       	glNormal3f(1, 0, 0);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(1 + i, -1 + j, 1 + k);
+                       	glVertex3f(1 + i, -1 + j, -1 + k);
+                       	glVertex3f(1 + i, 1 + j, -1 + k);
+                       	glVertex3f(1 + i, 1 + j, 1 + k);
+                       	/* face -Z */
+                       	glNormal3f(0, 0, -1);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(1 + i, -1 + j, -1 + k);
+                       	glVertex3f(-1 + i, -1 + j, -1 + k);
+                       	glVertex3f(-1 + i, 1 + j, -1 + k);
+                       	glVertex3f(1 + i, 1 + j, -1 + k);
+                       	/* face -X */
+                       	glNormal3f(-1, 0, 0);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(-1 + i, -1 + j, -1 + k);
+                       	glVertex3f(-1 + i, -1 + j, 1 + k);
+                       	glVertex3f(-1 + i, 1 + j, 1 + k);
+                       	glVertex3f(-1 + i, 1 + j, -1 + k);
+                       	/* face +Y */
+                       	glNormal3f(0, 1, 0);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(-1 + i, 1 + j, 1 + k);
+                       	glVertex3f(1 + i, 1 + j, 1 + k);
+                       	glVertex3f(1 + i, 1 + j, -1 + k);
+                       	glVertex3f(-1 + i, 1 + j, -1 + k);
+                       	/* face -Y */
+                       	glNormal3f(0, -1, 0);
+                       	glColor3f(1, 1, 1);
+                       	glVertex3f(-1 + i, -1 + j, -1 + k);
+                       	glVertex3f(1 + i, -1 + j, -1 + k);
+                       	glVertex3f(1 + i, -1 + j, 1 + k);
+                       	glVertex3f(-1 + i, -1 + j, 1 + k);
+                       	glEnd();
+                }
+        }
+    }
     glEndList();
 }
 
