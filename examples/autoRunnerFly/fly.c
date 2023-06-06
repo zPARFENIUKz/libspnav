@@ -264,6 +264,7 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
     /*cube*/
     glBegin(GL_QUADS);
