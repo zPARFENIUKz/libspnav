@@ -385,7 +385,6 @@ void gen_scene(void)
         case 3:
             	float x, y, h;
 
-            	srand(0);
 
             	glEnable(GL_TEXTURE_2D);
 
@@ -527,7 +526,7 @@ void handle_spnav_event(spnav_event *ev)
 		 {
 		     spnav_posrot_init(&posrot);
              redisplay_pending = 1;
-		 } else {
+		 } else if (sev.button.press){
 		    if (demoNumber == 3) demoNumber = 1;
 		    else ++demoNumber;
 		    gen_scene();
