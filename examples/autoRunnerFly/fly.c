@@ -383,7 +383,6 @@ void gen_scene(void)
             	glVertex3f(-1, -1, 1);
             break;
         case 3:
-            int i, j;
             	float x, y, h;
 
             	srand(0);
