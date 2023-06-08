@@ -529,7 +529,7 @@ void handle_spnav_event(spnav_event *ev)
 		 } else if (sev.button.press){
 		    if (demoNumber == 3) demoNumber = 1;
 		    else ++demoNumber;
-		    gen_scene();
+		    redraw();
 		 }
 		break;
 
