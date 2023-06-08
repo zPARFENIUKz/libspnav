@@ -387,61 +387,59 @@ void gen_scene(void)
 
             	srand(0);
 
-            	scene = glGenLists(1);
-            	glNewList(scene, GL_COMPILE);
-
             	glEnable(GL_TEXTURE_2D);
 
-            	/* grid */
-            	glBindTexture(GL_TEXTURE_2D, grid_tex);
+                	/* grid */
+                	glBindTexture(GL_TEXTURE_2D, grid_tex);
 
-            	glBegin(GL_QUADS);
-            	glColor3f(1, 1, 1);
-            	glTexCoord2f(0, 0);
-            	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-            	glTexCoord2f(GRID_REP, 0);
-            	glVertex3f(GRID_SZ, 0, GRID_SZ);
-            	glTexCoord2f(GRID_REP, GRID_REP);
-            	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-            	glTexCoord2f(0, GRID_REP);
-            	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-            	glEnd();
+                	glBegin(GL_QUADS);
+                	glColor3f(1, 1, 1);
+                	glTexCoord2f(0, 0);
+                	glVertex3f(-GRID_SZ, 0, GRID_SZ);
+                	glTexCoord2f(GRID_REP, 0);
+                	glVertex3f(GRID_SZ, 0, GRID_SZ);
+                	glTexCoord2f(GRID_REP, GRID_REP);
+                	glVertex3f(GRID_SZ, 0, -GRID_SZ);
+                	glTexCoord2f(0, GRID_REP);
+                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+                	glEnd();
 
-            	/* buildings */
-            	glBindTexture(GL_TEXTURE_2D, box_tex);
-            	for(i=0; i<8; i++) {
-            		for(j=0; j<8; j++) {
-            			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-            			y = (i - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-            			h = (3.0f + (float)rand() / RAND_MAX) * 6.0f;
+                	/* buildings */
+                	glBindTexture(GL_TEXTURE_2D, box_tex);
+                	for(i=0; i<8; i++) {
+                		for(j=0; j<8; j++) {
+                			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
+                			y = (i - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
+                			h = (3.0f + (float)rand() / RAND_MAX) * 6.0f;
 
-            			glPushMatrix();
-            			glTranslatef(x, h/2, y);
-            			glMatrixMode(GL_TEXTURE);
-            			glLoadIdentity();
-            			glScalef(3, h/4, 1);
+                			glPushMatrix();
+                			glTranslatef(x, h/2, y);
+                			glMatrixMode(GL_TEXTURE);
+                			glLoadIdentity();
+                			glScalef(3, h/4, 1);
 
-            			draw_box(6, h, 6);
+                			draw_box(6, h, 6);
 
-            			glLoadIdentity();
-            			glMatrixMode(GL_MODELVIEW);
-            			glPopMatrix();
-            		}
-            	}
+                			glLoadIdentity();
+                			glMatrixMode(GL_MODELVIEW);
+                			glPopMatrix();
+                		}
+                	}
 
-            	glDisable(GL_TEXTURE_2D);
-            	glDisable(GL_FOG);
+                	glDisable(GL_TEXTURE_2D);
+                	glDisable(GL_FOG);
 
-            	/* skydome */
-            	glBegin(GL_TRIANGLE_FAN);
-            	glColor3f(0.07, 0.1, 0.4);
-            	glVertex3f(0, GRID_SZ/5, 0);
-            	glColor3f(0.5, 0.2, 0.05);
-            	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-            	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-            	glVertex3f(GRID_SZ, 0, GRID_SZ);
-            	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-            	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+                	/* skydome */
+                	glBegin(GL_TRIANGLE_FAN);
+                	glColor3f(0.07, 0.1, 0.4);
+                	glVertex3f(0, GRID_SZ/5, 0);
+                	glColor3f(0.5, 0.2, 0.05);
+                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+                	glVertex3f(GRID_SZ, 0, -GRID_SZ);
+                	glVertex3f(GRID_SZ, 0, GRID_SZ);
+                	glVertex3f(-GRID_SZ, 0, GRID_SZ);
+                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+                	glEnd();
             break;
 	}
     if (demoNumber != 3) glEnd();
@@ -510,7 +508,8 @@ void handle_spnav_event(spnav_event *ev)
 		ev->motion.rx /= 2;
 		ev->motion.ry /= 2;
 		ev->motion.rz /= 2;
-		spnav_posrot_moveobj(&posrot, &ev->motion);
+		if (demoNumber != 3) spnav_posrot_moveobj(&posrot, &ev->motion);
+		else spnav_posrot_moveview(&posrot, &ev->motion);
 
 		/* XXX: Drop any further pending motion events. This can make our input
 		 * more responsive on slow or heavily loaded machines. We don't gain
