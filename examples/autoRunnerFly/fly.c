@@ -42,6 +42,7 @@ bool isPrintedAboutConnectDevice = false;
 int xsock, ssock, maxfd;
 char buf[256];
 spnav_event sev;
+int demoNumber = 1;
 
 bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
@@ -280,59 +281,108 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-
-	int i = 0, j = 0, k = 0;
-	glBegin(GL_QUADS);
-        for (i = 0; i < 9; ++i) {
-            for (j = 0; j < 9; ++j) {
-                    for (k = 0; k < 9; ++k) {
-                           /*cube*/
-                           	/* face +Z */
-                           	glNormal3f(0, 0, 1);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-5 + i, -5 + j, -3 + k);
-                           	glVertex3f(-3 + i, -5 + j, -3 + k);
-                           	glVertex3f(-3 + i, -3 + j, -3 + k);
-                           	glVertex3f(-5 + i, -3 + j, -3 + k);
-                           	/* face +X */
-                           	glNormal3f(1, 0, 0);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-3 + i, -5 + j, -3 + k);
-                           	glVertex3f(-3 + i, -5 + j, -5 + k);
-                           	glVertex3f(-3 + i, -3 + j, -5 + k);
-                           	glVertex3f(-3 + i, -3 + j, -3 + k);
-                           	/* face -Z */
-                           	glNormal3f(0, 0, -1);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-3 + i, -5 + j, -5 + k);
-                           	glVertex3f(-5 + i, -5 + j, -5 + k);
-                           	glVertex3f(-5 + i, -3 + j, -5 + k);
-                           	glVertex3f(-3 + i, -3 + j, -5 + k);
-                           	/* face -X */
-                           	glNormal3f(-1, 0, 0);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-5 + i, -5 + j, -5 + k);
-                           	glVertex3f(-5 + i, -5 + j, -3 + k);
-                           	glVertex3f(-5 + i, -3 + j, -3 + k);
-                           	glVertex3f(-5 + i, -3 + j, -5 + k);
-                           	/* face +Y */
-                           	glNormal3f(0, 1, 0);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-5 + i, -3 + j, -3 + k);
-                           	glVertex3f(-3 + i, -3 + j, -3 + k);
-                           	glVertex3f(-3 + i, -3 + j, -5 + k);
-                           	glVertex3f(-5 + i, -3 + j, -5 + k);
-                           	/* face -Y */
-                           	glNormal3f(0, -1, 0);
-                           	glColor3f(1, 1, 1);
-                           	glVertex3f(-5 + i, -5 + j, -5 + k);
-                           	glVertex3f(-3 + i, -5 + j, -5 + k);
-                           	glVertex3f(-3 + i, -5 + j, -3 + k);
-                           	glVertex3f(-5 + i, -5 + j, -3 + k);
+	switch (demoNumber) {
+	    case 1:
+	        glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+            	int i = 0, j = 0, k = 0;
+            	glBegin(GL_QUADS);
+                    for (i = 0; i < 9; ++i) {
+                        for (j = 0; j < 9; ++j) {
+                                for (k = 0; k < 9; ++k) {
+                                       /*cube*/
+                                       	/* face +Z */
+                                       	glNormal3f(0, 0, 1);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
+                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
+                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
+                                       	/* face +X */
+                                       	glNormal3f(1, 0, 0);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
+                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
+                                       	/* face -Z */
+                                       	glNormal3f(0, 0, -1);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
+                                       	/* face -X */
+                                       	glNormal3f(-1, 0, 0);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
+                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
+                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
+                                       	/* face +Y */
+                                       	glNormal3f(0, 1, 0);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
+                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
+                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
+                                       	/* face -Y */
+                                       	glNormal3f(0, -1, 0);
+                                       	glColor3f(1, 1, 1);
+                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
+                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
+                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
+                                }
+                        }
                     }
-            }
-        }
+                    break;
+        case 2:
+            glBegin(GL_QUADS);
+            	/* face +Z */
+            	glNormal3f(0, 0, 1);
+            	glColor3f(1, 0, 0);
+            	glVertex3f(-1, -1, 1);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(1, 1, 1);
+            	glVertex3f(-1, 1, 1);
+            	/* face +X */
+            	glNormal3f(1, 0, 0);
+            	glColor3f(0, 1, 0);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(1, 1, -1);
+            	glVertex3f(1, 1, 1);
+            	/* face -Z */
+            	glNormal3f(0, 0, -1);
+            	glColor3f(0, 0, 1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(-1, 1, -1);
+            	glVertex3f(1, 1, -1);
+            	/* face -X */
+            	glNormal3f(-1, 0, 0);
+            	glColor3f(1, 1, 0);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(-1, -1, 1);
+            	glVertex3f(-1, 1, 1);
+            	glVertex3f(-1, 1, -1);
+            	/* face +Y */
+            	glNormal3f(0, 1, 0);
+            	glColor3f(0, 1, 1);
+            	glVertex3f(-1, 1, 1);
+            	glVertex3f(1, 1, 1);
+            	glVertex3f(1, 1, -1);
+            	glVertex3f(-1, 1, -1);
+            	/* face -Y */
+            	glNormal3f(0, -1, 0);
+            	glColor3f(1, 0, 1);
+            	glVertex3f(-1, -1, -1);
+            	glVertex3f(1, -1, -1);
+            	glVertex3f(1, -1, 1);
+            	glVertex3f(-1, -1, 1);
+            break;
+	}
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glEnd();
     glEndList();
 }
@@ -395,8 +445,14 @@ void handle_spnav_event(spnav_event *ev)
 		/* XXX reset position and orientation to identity on button presses to
 		 * reset the view
 		 */
-		spnav_posrot_init(&posrot);
-		redisplay_pending = 1;
+		 if (sev.button.bnum == 0)
+		 {
+		     spnav_posrot_init(&posrot);
+             redisplay_pending = 1;
+		 } else {
+		    if (demoNumber == 3) demoNumber = 1;
+		    else ++demoNumber;
+		 }
 		break;
 
 	default:
