@@ -529,6 +529,7 @@ void handle_spnav_event(spnav_event *ev)
 		 } else if (sev.button.press){
 		    if (demoNumber == 3) demoNumber = 1;
 		    else ++demoNumber;
+		    gen_scene();
 		    redraw();
 		 }
 		break;
@@ -585,3 +586,4 @@ void draw_box(float xsz, float ysz, float zsz)
 	glVertex3f(-xsz, -ysz, zsz);
 	glEnd();
 }
+
