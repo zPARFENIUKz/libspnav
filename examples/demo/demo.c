@@ -15,7 +15,7 @@
 #define GRID_REP	180
 #define GRID_SZ		200
 
-const char *spaceballInfoDirectoryFilePath = "spaceball/info/";
+const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 
 void gen_textures(void);
 void gen_scene(void);
