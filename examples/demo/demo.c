@@ -1,8 +1,3 @@
-/* This example demonstrates how to use 6-dof input for controlling the camera
- * to fly around a scene. The native spacenav protocol is used, to also
- * demonstrate how to integrate input from libspnav in an event loop.
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -20,6 +15,8 @@
 #define GRID_REP	180
 #define GRID_SZ		200
 
+const char *spaceballInfoDirectoryFilePath = "spaceball/info/";
+
 void gen_textures(void);
 void gen_scene(void);
 void redraw(void);
@@ -32,11 +29,6 @@ void genMyCubeScene(void);
 void genDefaultCubeScene(void);
 void genFlyScene(void);
 
-/* XXX: posrot contains a position vector and an orientation quaternion, and
- * can be used with the spnav_posrot_moveview function to accumulate input
- * motions, and then with spnav_matrix_view to create a view matrix.
- * See util.c in the libspnav source code for implementation details.
- */
 struct spnav_posrot posrot;
 
 unsigned int grid_tex, box_tex;
@@ -48,26 +40,37 @@ char buf[256];
 spnav_event sev;
 int demoNumber = 1;
 
+void printDeviceInfo(const char* deviceName) 
+{
+    char finalPath[128];
+    strcat(finalPath, spaceballInfoDirectoryFilePath);
+    strcat(finalPath, deviceName);
+    strcat(finalPath, ".txt");
+    FILE *fp = fopen(finalPath, "r");
+    if (fp == NULL) 
+    {
+        printf("Error: could not open file %s", deviceName);
+        return;
+    }
+    const unsigned MAX_LENGTH = 256;
+    char buffer[MAX_LENGTH];
+    while (fgets(buffer, MAX_LENGTH, fp)) 
+    {
+        printf("s", buffer);
+    }
+    fclose(fp);
+}
+
 bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
     system("clear");
-    int i;
-    for (i = 0; i < 20; ++i) {
-        printf("\n");
-    }
-    for (i = 0; i < 5; ++i) {
-        printf("\t");
-    }
-    printf("Device: %s\n", buf);
-    for (i = 0; i < 5; ++i) {
-            printf("\t");
-    }
-    printf("Press any device button to continue...\n");
+    printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
     return true;
 }
+
 
 bool tryToPrintConnectDeviceMessage()
 {
@@ -456,105 +459,108 @@ void draw_box(float xsz, float ysz, float zsz)
 void genMyCubeScene() 
 {
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-            	int i = 0, j = 0, k = 0;
-            	glBegin(GL_QUADS);
-                    for (i = 0; i < 9; ++i) {
-                        for (j = 0; j < 9; ++j) {
-                                for (k = 0; k < 9; ++k) {
-                                       /*cube*/
-                                       	/* face +Z */
-                                       	glNormal3f(0, 0, 1);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
-                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
-                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
-                                       	/* face +X */
-                                       	glNormal3f(1, 0, 0);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
-                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
-                                       	/* face -Z */
-                                       	glNormal3f(0, 0, -1);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
-                                       	/* face -X */
-                                       	glNormal3f(-1, 0, 0);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
-                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
-                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
-                                       	/* face +Y */
-                                       	glNormal3f(0, 1, 0);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-5 + i, -3 + j, -3 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -3 + k);
-                                       	glVertex3f(-3 + i, -3 + j, -5 + k);
-                                       	glVertex3f(-5 + i, -3 + j, -5 + k);
-                                       	/* face -Y */
-                                       	glNormal3f(0, -1, 0);
-                                       	glColor3f(1, 1, 1);
-                                       	glVertex3f(-5 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-3 + i, -5 + j, -5 + k);
-                                       	glVertex3f(-3 + i, -5 + j, -3 + k);
-                                       	glVertex3f(-5 + i, -5 + j, -3 + k);
-                                }
-                        }
-                    }
+    int i = 0, j = 0, k = 0;
+    glBegin(GL_QUADS);
+    for (i = 0; i < 9; ++i) 
+    {
+        for (j = 0; j < 9; ++j) 
+        {
+            for (k = 0; k < 9; ++k) 
+            {
+                /*cube*/
+                /* face +Z */
+                glNormal3f(0, 0, 1);
+                glColor3f(1, 1, 1);
+                glVertex3f(-5 + i, -5 + j, -3 + k);
+                glVertex3f(-3 + i, -5 + j, -3 + k);
+                glVertex3f(-3 + i, -3 + j, -3 + k);
+                glVertex3f(-5 + i, -3 + j, -3 + k);
+                /* face +X */
+                glNormal3f(1, 0, 0);
+                glColor3f(1, 1, 1);
+                glVertex3f(-3 + i, -5 + j, -3 + k);
+                glVertex3f(-3 + i, -5 + j, -5 + k);
+                glVertex3f(-3 + i, -3 + j, -5 + k);
+                glVertex3f(-3 + i, -3 + j, -3 + k);
+                /* face -Z */
+                glNormal3f(0, 0, -1);
+                glColor3f(1, 1, 1);
+                glVertex3f(-3 + i, -5 + j, -5 + k);
+                glVertex3f(-5 + i, -5 + j, -5 + k);
+                glVertex3f(-5 + i, -3 + j, -5 + k);
+                glVertex3f(-3 + i, -3 + j, -5 + k);
+                /* face -X */
+                glNormal3f(-1, 0, 0);
+                glColor3f(1, 1, 1);
+                glVertex3f(-5 + i, -5 + j, -5 + k);
+                glVertex3f(-5 + i, -5 + j, -3 + k);
+                glVertex3f(-5 + i, -3 + j, -3 + k);
+                glVertex3f(-5 + i, -3 + j, -5 + k);
+                /* face +Y */
+                glNormal3f(0, 1, 0);
+                glColor3f(1, 1, 1);
+                glVertex3f(-5 + i, -3 + j, -3 + k);
+                glVertex3f(-3 + i, -3 + j, -3 + k);
+                glVertex3f(-3 + i, -3 + j, -5 + k);
+                glVertex3f(-5 + i, -3 + j, -5 + k);
+                /* face -Y */
+                glNormal3f(0, -1, 0);
+                glColor3f(1, 1, 1);
+                glVertex3f(-5 + i, -5 + j, -5 + k);
+                glVertex3f(-3 + i, -5 + j, -5 + k);
+                glVertex3f(-3 + i, -5 + j, -3 + k);
+                glVertex3f(-5 + i, -5 + j, -3 + k);
+            }
+        }
+    }
 }
 
 void genDefaultCubeScene(void) 
 {
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-            glBegin(GL_QUADS);
-            	/* face +Z */
-            	glNormal3f(0, 0, 1);
-            	glColor3f(1, 0, 0);
-            	glVertex3f(-1, -1, 1);
-            	glVertex3f(1, -1, 1);
-            	glVertex3f(1, 1, 1);
-            	glVertex3f(-1, 1, 1);
-            	/* face +X */
-            	glNormal3f(1, 0, 0);
-            	glColor3f(0, 1, 0);
-            	glVertex3f(1, -1, 1);
-            	glVertex3f(1, -1, -1);
-            	glVertex3f(1, 1, -1);
-            	glVertex3f(1, 1, 1);
-            	/* face -Z */
-            	glNormal3f(0, 0, -1);
-            	glColor3f(0, 0, 1);
-            	glVertex3f(1, -1, -1);
-            	glVertex3f(-1, -1, -1);
-            	glVertex3f(-1, 1, -1);
-            	glVertex3f(1, 1, -1);
-            	/* face -X */
-            	glNormal3f(-1, 0, 0);
-            	glColor3f(1, 1, 0);
-            	glVertex3f(-1, -1, -1);
-            	glVertex3f(-1, -1, 1);
-            	glVertex3f(-1, 1, 1);
-            	glVertex3f(-1, 1, -1);
-            	/* face +Y */
-            	glNormal3f(0, 1, 0);
-            	glColor3f(0, 1, 1);
-            	glVertex3f(-1, 1, 1);
-            	glVertex3f(1, 1, 1);
-            	glVertex3f(1, 1, -1);
-            	glVertex3f(-1, 1, -1);
-            	/* face -Y */
-            	glNormal3f(0, -1, 0);
-            	glColor3f(1, 0, 1);
-            	glVertex3f(-1, -1, -1);
-            	glVertex3f(1, -1, -1);
-            	glVertex3f(1, -1, 1);
-            	glVertex3f(-1, -1, 1);
+    glBegin(GL_QUADS);
+    /* face +Z */
+    glNormal3f(0, 0, 1);
+    glColor3f(1, 0, 0);
+    glVertex3f(-1, -1, 1);
+    glVertex3f(1, -1, 1);
+    glVertex3f(1, 1, 1);
+    glVertex3f(-1, 1, 1);
+    /* face +X */
+    glNormal3f(1, 0, 0);
+    glColor3f(0, 1, 0);
+    glVertex3f(1, -1, 1);
+    glVertex3f(1, -1, -1);
+    glVertex3f(1, 1, -1);
+    glVertex3f(1, 1, 1);
+    /* face -Z */
+    glNormal3f(0, 0, -1);
+    glColor3f(0, 0, 1);
+    glVertex3f(1, -1, -1);
+    glVertex3f(-1, -1, -1);
+    glVertex3f(-1, 1, -1);
+    glVertex3f(1, 1, -1);
+    /* face -X */
+    glNormal3f(-1, 0, 0);
+    glColor3f(1, 1, 0);
+    glVertex3f(-1, -1, -1);
+    glVertex3f(-1, -1, 1);
+    glVertex3f(-1, 1, 1);
+    glVertex3f(-1, 1, -1);
+    /* face +Y */
+    glNormal3f(0, 1, 0);
+    glColor3f(0, 1, 1);
+    glVertex3f(-1, 1, 1);
+    glVertex3f(1, 1, 1);
+    glVertex3f(1, 1, -1);
+    glVertex3f(-1, 1, -1);
+    /* face -Y */
+    glNormal3f(0, -1, 0);
+    glColor3f(1, 0, 1);
+    glVertex3f(-1, -1, -1);
+    glVertex3f(1, -1, -1);
+    glVertex3f(1, -1, 1);
+    glVertex3f(-1, -1, 1);
 }
 
 void genFlyScene(void) 
@@ -562,58 +568,59 @@ void genFlyScene(void)
     float x, y, h;
 
 
-            	glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
 
-                	/* grid */
-                	glBindTexture(GL_TEXTURE_2D, grid_tex);
+    /* grid */
+    glBindTexture(GL_TEXTURE_2D, grid_tex);
+    glBegin(GL_QUADS);
+    glColor3f(1, 1, 1);
+    glTexCoord2f(0, 0);
+    glVertex3f(-GRID_SZ, 0, GRID_SZ);
+    glTexCoord2f(GRID_REP, 0);
+    glVertex3f(GRID_SZ, 0, GRID_SZ);
+    glTexCoord2f(GRID_REP, GRID_REP);
+    glVertex3f(GRID_SZ, 0, -GRID_SZ);
+    glTexCoord2f(0, GRID_REP);
+    glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+    glEnd();
 
-                	glBegin(GL_QUADS);
-                	glColor3f(1, 1, 1);
-                	glTexCoord2f(0, 0);
-                	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-                	glTexCoord2f(GRID_REP, 0);
-                	glVertex3f(GRID_SZ, 0, GRID_SZ);
-                	glTexCoord2f(GRID_REP, GRID_REP);
-                	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-                	glTexCoord2f(0, GRID_REP);
-                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-                	glEnd();
+    /* buildings */
+    glBindTexture(GL_TEXTURE_2D, box_tex);
+    int i, j;
+    for(i=0; i<8; i++) 
+    {
+        for(j=0; j<8; j++) 
+        {
+            x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
+            y = (i - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
+            h = (3.0f + (float)rand() / RAND_MAX) * 6.0f;
 
-                	/* buildings */
-                	glBindTexture(GL_TEXTURE_2D, box_tex);
-                    int i, j;
-                	for(i=0; i<8; i++) {
-                		for(j=0; j<8; j++) {
-                			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-                			y = (i - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
-                			h = (3.0f + (float)rand() / RAND_MAX) * 6.0f;
+            glPushMatrix();
+            glTranslatef(x, h/2, y);
+            glMatrixMode(GL_TEXTURE);
+            glLoadIdentity();
+            glScalef(3, h/4, 1);
 
-                			glPushMatrix();
-                			glTranslatef(x, h/2, y);
-                			glMatrixMode(GL_TEXTURE);
-                			glLoadIdentity();
-                			glScalef(3, h/4, 1);
+            draw_box(6, h, 6);
 
-                			draw_box(6, h, 6);
+            glLoadIdentity();
+            glMatrixMode(GL_MODELVIEW);
+            glPopMatrix();
+        }
+    }
 
-                			glLoadIdentity();
-                			glMatrixMode(GL_MODELVIEW);
-                			glPopMatrix();
-                		}
-                	}
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_FOG);
 
-                	glDisable(GL_TEXTURE_2D);
-                	glDisable(GL_FOG);
-
-                	/* skydome */
-                	glBegin(GL_TRIANGLE_FAN);
-                	glColor3f(0.07, 0.1, 0.4);
-                	glVertex3f(0, GRID_SZ/5, 0);
-                	glColor3f(0.5, 0.2, 0.05);
-                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-                	glVertex3f(GRID_SZ, 0, -GRID_SZ);
-                	glVertex3f(GRID_SZ, 0, GRID_SZ);
-                	glVertex3f(-GRID_SZ, 0, GRID_SZ);
-                	glVertex3f(-GRID_SZ, 0, -GRID_SZ);
-                	glEnd();
+    /* skydome */
+    glBegin(GL_TRIANGLE_FAN);
+    glColor3f(0.07, 0.1, 0.4);
+    glVertex3f(0, GRID_SZ/5, 0);
+    glColor3f(0.5, 0.2, 0.05);
+    glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+    glVertex3f(GRID_SZ, 0, -GRID_SZ);
+    glVertex3f(GRID_SZ, 0, GRID_SZ);
+    glVertex3f(-GRID_SZ, 0, GRID_SZ);
+    glVertex3f(-GRID_SZ, 0, -GRID_SZ);
+    glEnd();
 }
