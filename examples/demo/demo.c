@@ -56,7 +56,7 @@ void printDeviceInfo(const char* deviceName)
     char buffer[MAX_LENGTH];
     while (fgets(buffer, MAX_LENGTH, fp)) 
     {
-        printf("s", buffer);
+        printf("%s", buffer);
     }
     fclose(fp);
 }
