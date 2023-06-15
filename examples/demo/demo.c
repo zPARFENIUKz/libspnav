@@ -581,6 +581,7 @@ void genFlyScene(void)
 
                 	/* buildings */
                 	glBindTexture(GL_TEXTURE_2D, box_tex);
+                    int i, j;
                 	for(i=0; i<8; i++) {
                 		for(j=0; j<8; j++) {
                 			x = (j - 4.0f + 0.5f * (float)rand() / RAND_MAX) * 20.0f;
