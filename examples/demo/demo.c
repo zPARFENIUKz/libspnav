@@ -40,7 +40,7 @@ void gen_textures(void);
 
 void openConnectionWithDaemon();
 bool isDeviceConnected();
-void tryToPrintDeviceInfo(char *buf);
+void tryToPrintDeviceInfo();
 bool isAnyDeviceButtonWasPressed();
 void openDemoWindow();
 void tryToPrintConnectDeviceMessage(const char* msg);
@@ -98,7 +98,7 @@ bool isDeviceConnected()
 	return spnav_dev_name(buf, sizeof buf) != -1;
 }
 
-void tryToPrintDeviceInfo(char *buf) 
+void tryToPrintDeviceInfo() 
 {
 	spnav_dev_name(buf, sizeof buf);
 	system("clear");
@@ -176,7 +176,7 @@ void runDemoInWindow()
     				if(handle_xevent(&xev) != 0) {
     					goto end;
     				}
-    				if (!tryToPrintDevice(buf))
+    				if (!isDeviceConnected())
     				{
     				    goto end;
     				}
