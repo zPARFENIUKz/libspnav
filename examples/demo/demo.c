@@ -11,9 +11,6 @@
 #include <spnav.h>
 #include "xwin.h"
 #include <stdbool.h>
-#include "myCube/myCube.h"
-#include "defaultCube/defaultCube.h"
-#include "fly/fly.h"
 
 #define GRID_REP	180
 #define GRID_SZ		200
@@ -42,7 +39,7 @@ void draw_box(float xsz, float ysz, float zsz);
 void openConnectionWithDaemon();
 bool isDeviceConnected();
 void tryToPrintDeviceInfo();
-bool isAnyButtonWasPressed();
+bool isAnyDeviceButtonWasPressed();
 void openDemoWindow();
 void tryToPrintConnectDeviceMessage(const char* msg);
 void runDemoInWindow();
@@ -110,13 +107,13 @@ void tryToPrintDeviceInfo()
 bool isAnyDeviceButtonWasPressed() 
 {
 	if(spnav_poll_event(&sev))
+    {
+        if (sev.type == SPNAV_EVENT_BUTTON)
         {
-            if (sev.type == SPNAV_EVENT_BUTTON)
-            {
-                return true;
-            }
+            return true;
         }
-       return false;
+    }
+    return false;
 }
 
 void openDemoWindow() 
@@ -124,12 +121,10 @@ void openDemoWindow()
 	if(!(dpy = XOpenDisplay(0))) 
 	{
     	printf("failed to connect to the X server");
-    	return false;
     }
 
     if(create_xwin("libspnav fly", 1080, 1080) == -1) {
    	    printf("create_xwin failed");
-    	return false;
     }
 
     /* XXX: initialize the position vector & orientation quaternion */
@@ -151,7 +146,6 @@ void openDemoWindow()
    	xsock = ConnectionNumber(dpy);		/* Xlib socket */
     ssock = spnav_fd();					/* libspnav socket */
     maxfd = xsock > ssock ? xsock : ssock;
-    return true;
 }
 
 void tryToPrintConnectDeviceMessage(const char* msg) 
@@ -208,7 +202,7 @@ void runDemoInWindow()
 
 void redraw(void) 
 {
-    switch demoNumber 
+    switch (demoNumber)
     {
         case 1:
             redrawMyCubeScene();
@@ -292,7 +286,7 @@ void redrawMyCubeScene(void)
     glTranslatef(0, 0, -20);	/* view matrix, push back to see the cube */
 
     /* XXX convert the accumulated position/rotation into a 4x4 view matrix */
-    spnav_matrix_obj(xform, posrot);
+    spnav_matrix_obj(xform, &posrot);
     glMultMatrixf(xform);		/* concatenate our computed view matrix */
 
 
@@ -362,7 +356,7 @@ void redrawDefaultCubeScene(void)
     glTranslatef(0, 0, -20);	/* view matrix, push back to see the cube */
 
     /* XXX convert the accumulated position/rotation into a 4x4 view matrix */
-    spnav_matrix_obj(xform, posrot);
+    spnav_matrix_obj(xform, &posrot);
     glMultMatrixf(xform);		/* concatenate our computed view matrix */
 
 
@@ -398,6 +392,7 @@ void genFlyScene(void)
 
     /* buildings */
     glBindTexture(GL_TEXTURE_2D, box_tex);
+    int i, j;
     for(i=0; i<8; i++) 
     {
         for(j=0; j<8; j++) 
@@ -469,7 +464,7 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
-    switch demoNumber 
+    switch (demoNumber)
     {
         case 1:
             genMyCubeScene();
