@@ -42,7 +42,7 @@ int demoNumber = 1;
 
 void printDeviceInfo(const char* deviceName) 
 {
-    char finalPath[128];
+    char finalPath[128] = "\0";
     strcat(finalPath, spaceballInfoDirectoryFilePath);
     strcat(finalPath, deviceName);
     strcat(finalPath, ".txt");
