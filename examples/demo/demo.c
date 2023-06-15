@@ -49,7 +49,7 @@ void printDeviceInfo(const char* deviceName)
     FILE *fp = fopen(finalPath, "r");
     if (fp == NULL) 
     {
-        printf("Error: could not open file %s", deviceName);
+        printf("Error: could not open file %s", finalPath);
         return;
     }
     const unsigned MAX_LENGTH = 256;
