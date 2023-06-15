@@ -1,4 +1,4 @@
-obj = demo.o xwin.o defaultCube/defaultCube.o fly/fly.o myCube/myCube.o
+obj = demo.o xwin.o
 bin = demo
 
 CC = gcc
