@@ -61,7 +61,7 @@ void genDefaultCubeScene(void)
     glVertex3f(-1, -1, 1);
 }
 
-void redrawDefaultCubeScene(const spnav_posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
+void redrawDefaultCubeScene(const posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
 {
 	float xform[16];
 

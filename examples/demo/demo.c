@@ -21,7 +21,7 @@
 const char* connectDeviceMessage = "Connect your device to continue...";
 const char* failedConnectionWithDaemonMessage = "Connection with the daemon was failed";
 
-struct spnav_posrot posrot;
+
 unsigned int grid_tex, box_tex;
 unsigned int scene;
 bool isPrintedAboutDevice = false;

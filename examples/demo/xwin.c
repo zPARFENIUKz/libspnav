@@ -14,6 +14,7 @@ Atom wm_prot, wm_del_win;
 GLXContext ctx;
 Window win;
 int redisplay_pending;
+struct spnav_posrot posrot;
 
 int create_xwin(const char *title, int xsz, int ysz)
 {

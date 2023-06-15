@@ -73,7 +73,7 @@ void genFlyScene(void)
     glVertex3f(-GRID_SZ, 0, -GRID_SZ);
     glEnd();
 }
-void redrawFlyScene(const spnav_posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
+void redrawFlyScene(const posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
 {
     float xform[16];
 

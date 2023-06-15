@@ -13,4 +13,4 @@
 #include <stdbool.h>
 
 void genDefaultCubeScene(void);
-void redrawDefaultCubeScene(const spnav_posrot *posrot, unsigned int scene, Display *dpy, Window &win);
+void redrawDefaultCubeScene(const posrot *posrot, unsigned int scene, Display *dpy, Window &win);

@@ -13,4 +13,4 @@
 #include <stdbool.h>
 
 void genFlyScene(void);
-void redrawFlyScene(const spnav_posrot *posrot, unsigned int scene, Display *dpy, Window &win);
+void redrawFlyScene(const posrot *posrot, unsigned int scene, Display *dpy, Window &win);

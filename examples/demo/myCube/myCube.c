@@ -74,7 +74,7 @@ void genMyCubeScene()
      }
 }
 
-void redrawMyCubeScene(const spnav_posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
+void redrawMyCubeScene(const posrot *posrot, unsigned int scene, Display *dpy, Window &win) 
 {
 	float xform[16];
 
