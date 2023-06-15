@@ -31,10 +31,12 @@ int demoNumber = 1;
 void gen_textures(void);
 void gen_scene(void);
 void redraw(void);
+void reshape(int x, int y);
 void draw_scene(void);
 void handle_spnav_event(spnav_event *ev);
 int handle_xevent(XEvent *xev);
 void draw_box(float xsz, float ysz, float zsz);
+void gen_textures(void);
 
 void openConnectionWithDaemon();
 bool isDeviceConnected();
@@ -478,4 +480,164 @@ void gen_scene(void)
     }
     if (demoNumber != 3) glEnd();
     glEndList();
+}
+
+void handle_spnav_event(spnav_event *ev)
+{
+	switch(ev->type) {
+	case SPNAV_EVENT_MOTION:
+		/* XXX use the spnav_posrot_moveview utility function to modify the view
+		 * position vector and orientation quaternion, based on the motion input
+		 * we received.
+		 *
+		 * We'll also divide rotation values by two, to make rotation less
+		 * sensitive. In this scale, it feels better that way in fly mode. The
+		 * ideal ratio of sensitivities will vary depending on the scene scale.
+		 */
+		ev->motion.rx /= 2;
+		ev->motion.ry /= 2;
+		ev->motion.rz /= 2;
+		if (demoNumber != 3) spnav_posrot_moveobj(&posrot, &ev->motion);
+		else spnav_posrot_moveview(&posrot, &ev->motion);
+
+		/* XXX: Drop any further pending motion events. This can make our input
+		 * more responsive on slow or heavily loaded machines. We don't gain
+		 * anything by processing a whole queue of relative motions.
+		 */
+		spnav_remove_events(SPNAV_EVENT_MOTION);
+		redisplay_pending = 1;
+		break;
+
+	case SPNAV_EVENT_BUTTON:
+		/* XXX reset position and orientation to identity on button presses to
+		 * reset the view
+		 */
+		 if (sev.button.bnum == 0)
+		 {
+		     spnav_posrot_init(&posrot);
+             redisplay_pending = 1;
+		 } else if (sev.button.press){
+		    if (demoNumber == 3) demoNumber = 1;
+		    else ++demoNumber;
+		    gen_scene();
+		    redraw();
+		 }
+		break;
+
+	default:
+		break;
+	}
+}
+
+void draw_box(float xsz, float ysz, float zsz)
+{
+	xsz /= 2;
+	ysz /= 2;
+	zsz /= 2;
+
+	glBegin(GL_QUADS);
+	/* face +Z */
+	glNormal3f(0, 0, 1);
+	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, zsz);
+	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, zsz);
+	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, zsz);
+	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, zsz);
+	/* face +X */
+	glNormal3f(1, 0, 0);
+	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, zsz);
+	glTexCoord2f(1, 0); glVertex3f(xsz, -ysz, -zsz);
+	glTexCoord2f(1, 1); glVertex3f(xsz, ysz, -zsz);
+	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, zsz);
+	/* face -Z */
+	glNormal3f(0, 0, -1);
+	glTexCoord2f(0, 0); glVertex3f(xsz, -ysz, -zsz);
+	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, -zsz);
+	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, -zsz);
+	glTexCoord2f(0, 1); glVertex3f(xsz, ysz, -zsz);
+	/* face -X */
+	glNormal3f(-1, 0, 0);
+	glTexCoord2f(0, 0); glVertex3f(-xsz, -ysz, -zsz);
+	glTexCoord2f(1, 0); glVertex3f(-xsz, -ysz, zsz);
+	glTexCoord2f(1, 1); glVertex3f(-xsz, ysz, zsz);
+	glTexCoord2f(0, 1); glVertex3f(-xsz, ysz, -zsz);
+	/* face +Y */
+	glNormal3f(0, 1, 0);
+	glTexCoord2f(0, 0);
+	glVertex3f(-xsz, ysz, zsz);
+	glVertex3f(xsz, ysz, zsz);
+	glVertex3f(xsz, ysz, -zsz);
+	glVertex3f(-xsz, ysz, -zsz);
+	/* face -Y */
+	glNormal3f(0, -1, 0);
+	glTexCoord2f(0, 0);
+	glVertex3f(-xsz, -ysz, -zsz);
+	glVertex3f(xsz, -ysz, -zsz);
+	glVertex3f(xsz, -ysz, zsz);
+	glVertex3f(-xsz, -ysz, zsz);
+	glEnd();
+}
+
+void gen_textures(void)
+{
+	int i, j, r, g, b;
+	static unsigned char pixels[128 * 128 * 3];
+	unsigned char *pptr;
+
+	pptr = pixels;
+	for(i=0; i<128; i++) {
+		float dy = abs(i - 64) / 64.0f;
+		for(j=0; j<128; j++) {
+			float dx = abs(j - 64) / 64.0f;
+			float d = dx > dy ? dx : dy;
+			float val = pow(d * 1.04f, 10.0) * 1.4f;
+
+			r = (int)(214.0f * val);
+			g = (int)(76.0f * val);
+			b = (int)(255.0f * val);
+
+			*pptr++ = r > 255 ? 255 : r;
+			*pptr++ = g > 255 ? 255 : g;
+			*pptr++ = b > 255 ? 255 : b;
+		}
+	}
+
+	glGenTextures(1, &grid_tex);
+	glBindTexture(GL_TEXTURE_2D, grid_tex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+	pptr = pixels;
+	for(i=0; i<128; i++) {
+		int row = i >> 5;
+		float dy = ((i - 12) & 0x1f) / 16.0f;
+		for(j=0; j<128; j++) {
+			int col = j >> 5;
+			float dx = ((j - 12) & 0x1f) / 16.0f;
+			float d = dx > dy ? dx : dy;
+			int xor = (col ^ row) & 0xf;
+
+			r = d < 0.5f ? (xor << 4) + 20 : 0;
+			g = d < 0.5f ? (xor << 4) + 20 : 0;
+			b = d < 0.5f ? (xor << 4) + 20 : 0;
+
+			*pptr++ = r > 255 ? 255 : r;
+			*pptr++ = g > 255 ? 255 : g;
+			*pptr++ = b > 255 ? 255 : b;
+		}
+	}
+
+	glGenTextures(1, &box_tex);
+	glBindTexture(GL_TEXTURE_2D, box_tex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, 128, 128, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+}
+
+void reshape(int x, int y)
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0, (float)x / (float)y, 1.0, 1000.0);
+	glViewport(0, 0, x, y);
 }
