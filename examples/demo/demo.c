@@ -18,7 +18,7 @@
 #define GRID_SZ		200
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
-const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/"
+const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/";
 
 void gen_textures(void);
 void gen_scene(void);
@@ -57,7 +57,7 @@ void stopSpacenavd(void)
     kill(spacenavdPid, SIGKILL);
 }
 
-void isThereSpnavrcForDevice(const char *deviceName) {
+bool isThereSpnavrcForDevice(const char *deviceName) {
     char *spnavrcFilePath[128];
     strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
     strcat(spnavrcFilePath, deviceName);
