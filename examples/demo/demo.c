@@ -11,7 +11,7 @@
 #include <spnav.h>
 #include "xwin.h"
 #include <stdbool.h>
-#include <sys/types>
+#include <sys/types.h>
 #include <unistd.h>
 
 #define GRID_REP	180
@@ -19,7 +19,6 @@
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/"
-pid_t spacenavdPid;
 
 void gen_textures(void);
 void gen_scene(void);
@@ -43,10 +42,19 @@ int xsock, ssock, maxfd;
 char buf[256];
 spnav_event sev;
 int demoNumber = 1;
+pid_t spacenavdPid;
+const char *spacenavdDefaultStartScript = "./spacenavd/spacenavd -v -d";
+const char *spacenavdWithSpnavrcStartScript = "./spacenavd/spacenavd -v -d -c ";
+
 
 void startDefaultSpacenavd(void) 
 {
+    system(spacenavdDefaultStartScript);
+}
 
+void stopSpacenavd(void) 
+{
+    kill(spacenavdPid, SIGKILL);
 }
 
 void isThereSpnavrcForDevice(const char *deviceName) {
@@ -69,25 +77,40 @@ void isThereSpnavrcForDevice(const char *deviceName) {
 
 void restartDefaultSpacenavd(void) 
 {
+    stopSpacenavd();
+    startDefaultSpacenavd();
+}
 
+void startSpacenavdWithSpnavrc(const char *spnavrcFilePath) 
+{
+    char *finalCommand = spacenavdWithSpnavrcStartScript;
+    strcat(finalCommand, spnavrcFilePath);
+}
+
+void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath) 
+{
+    stopSpacenavd();
+    startSpacenavdWithSpnavrc(spnavrcFilePath);
 }
 
 void restartSpacenavd(const char* deviceName) 
 {
+    pid_t pid;
     switch(pid = fork()) 
     {
+        spacenavdPid = getPid();
         case -1:
         printf("spacenavd starting failed");
             exit(1);
             break;
         case 0:
+            
             if (isThereSpnavrcForDevice(deviceName)) 
             {
                 char *spnavrcFilePath[128];
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
-                
                 restartSpacenavdWithSpnavrc(spnavrcFilePath);
             } else 
             {
@@ -230,7 +253,8 @@ void runDemo()
 void openConnection()
 {
     /* XXX: open connection to the spacenav driver */
-       	if(spnav_open() == -1) {
+        spnav_close();
+       	while(spnav_open() == -1) {
 
         }
 }
@@ -252,6 +276,10 @@ int main(void)
     for (;;)
     {
         openConnection();
+        spnav_close();
+       	while(spnav_open() == -1) {
+
+        }
         if (tryToPrintDevice())
         {
             if (buttonWasPressed())
