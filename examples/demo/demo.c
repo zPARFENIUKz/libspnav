@@ -11,11 +11,15 @@
 #include <spnav.h>
 #include "xwin.h"
 #include <stdbool.h>
+#include <sys/types>
+#include <unistd.h>
 
 #define GRID_REP	180
 #define GRID_SZ		200
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
+const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/"
+pid_t spacenavdPid;
 
 void gen_textures(void);
 void gen_scene(void);
@@ -39,6 +43,59 @@ int xsock, ssock, maxfd;
 char buf[256];
 spnav_event sev;
 int demoNumber = 1;
+
+void startDefaultSpacenavd(void) 
+{
+
+}
+
+void isThereSpnavrcForDevice(const char *deviceName) {
+    char *spnavrcFilePath[128];
+    strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
+    strcat(spnavrcFilePath, deviceName);
+    strcat(spnavrcFilePath, "/spnavrc");
+
+    FILE *fp = fopen(finalPath, "r");
+    if (fp == NULL) 
+    {
+        fclose(fp);
+        return false;
+    } else 
+    {
+        fclose(fp);
+        return true;
+    }
+}
+
+void restartDefaultSpacenavd(void) 
+{
+
+}
+
+void restartSpacenavd(const char* deviceName) 
+{
+    switch(pid = fork()) 
+    {
+        case -1:
+        printf("spacenavd starting failed");
+            exit(1);
+            break;
+        case 0:
+            if (isThereSpnavrcForDevice(deviceName)) 
+            {
+                char *spnavrcFilePath[128];
+                strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
+                strcat(spnavrcFilePath, deviceName);
+                strcat(spnavrcFilePath, "/spnavrc");
+                
+                restartSpacenavdWithSpnavrc(spnavrcFilePath);
+            } else 
+            {
+                restartDefaultSpacenavd();
+            }
+            break;
+    }
+}
 
 void printDeviceInfo(const char* deviceName) 
 {
