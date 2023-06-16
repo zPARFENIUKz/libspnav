@@ -276,7 +276,6 @@ int main(void)
 
     for (;;)
     {
-        startDefaultSpacenavd();
         openConnection();
         spnav_close();
        	while(spnav_open() == -1) {
