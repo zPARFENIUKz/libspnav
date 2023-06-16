@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <signal.h>
 
 #define GRID_REP	180
 #define GRID_SZ		200
@@ -63,7 +64,7 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
 
-    FILE *fp = fopen(finalPath, "r");
+    FILE *fp = fopen(spnavrcFilePath, "r");
     if (fp == NULL) 
     {
         fclose(fp);
