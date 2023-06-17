@@ -174,7 +174,6 @@ void printDeviceInfo(const char* deviceName)
 bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
-    restartSpacenavd(buf);
     system("clear");
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
@@ -323,6 +322,7 @@ int main(void)
 
         }
         spnav_dev_name(buf, sizeof buf);
+        restartSpacenavd(buf);
         if (tryToPrintDevice())
         {
             if (buttonWasPressed())
