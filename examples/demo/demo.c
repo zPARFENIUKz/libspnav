@@ -104,30 +104,45 @@ void restartSpacenavd(const char* deviceName)
 {
     pid_t pid;
     
+        printf("restartSpacenavd()");
         if (pid = fork() == 0)
         {
+            printf("Зашел в созданный процесс");
             char buffer[128];
             getcwd(buffer, sizeof buffer);
             strcat(buffer, "/spacenavd/spacenavd");
             if (isThereSpnavrcForDevice(deviceName)) 
             {
+                printf("Был найдет файл конфигурации для %s", deviceName);
                 char *spnavrcFilePath[128];
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
-                kill(spacenavdPid, SIGKILL);
+                if (spacenavdPid != 0) 
+                {
+                    printf("убиваем предыдущего демона с pid = %d", spacenavdPid);
+                    kill(spacenavdPid, SIGKILL);
+                } else 
+                {
+                    printf("нет запущенного демона");
+                }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
                 execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath);
             } else 
             {
                 printf("starting default daemon");
-                kill(spacenavdPid, SIGKILL);
+                if (spacenavdPid != 0) {
+                    printf("убиваем предыдущего демона с pid = %d", spacenavdPid);
+                    kill(spacenavdPid, SIGKILL);
+                }
+                printf("Starting default daemon");
                 execl(buffer, buffer, "-v", "-d");
-                restartDefaultSpacenavd();
+                //restartDefaultSpacenavd();
             }
         } else 
         {
+            printf("Зашел в родительский процесс и присвоил пид дочернего = %s", pid);
             spacenavdPid = pid;
         }
     
@@ -285,6 +300,7 @@ bool buttonWasPressed()
 }
 int main(void)
 {
+    printf("Попытка стартовать демона");
     restartSpacenavd("dfdg");
     for (;;)
     {
