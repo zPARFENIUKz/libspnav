@@ -104,45 +104,45 @@ void restartSpacenavd(const char* deviceName)
 {
     pid_t pid;
     
-        printf("restartSpacenavd()");
+        printf("restartSpacenavd()\n");
         if (pid = fork() == 0)
         {
-            printf("Зашел в созданный процесс");
+            printf("Зашел в созданный процесс\n");
             char buffer[128];
             getcwd(buffer, sizeof buffer);
-            strcat(buffer, "/spacenavd/spacenavd");
+            strcat(buffer, "/spacenavd/spacenavd\n");
             if (isThereSpnavrcForDevice(deviceName)) 
             {
-                printf("Был найдет файл конфигурации для %s", deviceName);
+                printf("Был найдет файл конфигурации для %s\n", deviceName);
                 char *spnavrcFilePath[128];
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
                 if (spacenavdPid != 0) 
                 {
-                    printf("убиваем предыдущего демона с pid = %d", spacenavdPid);
+                    printf("убиваем предыдущего демона с pid = %d\n", spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 } else 
                 {
-                    printf("нет запущенного демона");
+                    printf("нет запущенного демона\n");
                 }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
                 execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath);
             } else 
             {
-                printf("starting default daemon");
+                printf("starting default daemon\n");
                 if (spacenavdPid != 0) {
-                    printf("убиваем предыдущего демона с pid = %d", spacenavdPid);
+                    printf("убиваем предыдущего демона с pid = %d\n", spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 }
-                printf("Starting default daemon");
+                printf("Starting default daemon\n");
                 execl(buffer, buffer, "-v", "-d");
                 //restartDefaultSpacenavd();
             }
         } else 
         {
-            printf("Зашел в родительский процесс и присвоил пид дочернего = %s", pid);
+            printf("Зашел в родительский процесс и присвоил пид дочернего = %s\n", pid);
             spacenavdPid = pid;
         }
     
@@ -157,14 +157,14 @@ void printDeviceInfo(const char* deviceName)
     FILE *fp = fopen(finalPath, "r");
     if (fp == NULL) 
     {
-        printf("Error: could not open file %s", finalPath);
+        printf("Error: could not open file %s\n", finalPath);
         return;
     }
     const unsigned MAX_LENGTH = 256;
     char buffer[MAX_LENGTH];
     while (fgets(buffer, MAX_LENGTH, fp)) 
     {
-        printf("%s", buffer);
+        printf("%s\n", buffer);
     }
     fclose(fp);
 }
@@ -300,7 +300,7 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    printf("Попытка стартовать демона");
+    printf("Попытка стартовать демона\n");
     restartSpacenavd("dfdg");
     for (;;)
     {
