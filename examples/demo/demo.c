@@ -111,7 +111,7 @@ void restartSpacenavd(const char* deviceName)
             printf("In created process\n");
             char buffer[128] = "\0";
             getcwd(buffer, sizeof buffer);
-            strcat(buffer, "/spacenavd/spacenavd\n");
+            strcat(buffer, "/spacenavd/spacenavd");
             printf("%s\n", buffer);
             if (isThereSpnavrcForDevice(deviceName)) 
             {
@@ -130,7 +130,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
-                execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath, NULL);
+                execl(buffer, "-v", "-d", "-c", spnavrcFilePath, NULL);
             } else 
             {
                 if (spacenavdPid != 0) {
@@ -139,7 +139,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
-                execl(buffer, buffer, "-v", "-d", NULL);
+                execl(buffer, buffer "-v", "-d", NULL);
                 //restartDefaultSpacenavd();
             }
         } else 
