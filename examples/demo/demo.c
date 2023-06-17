@@ -276,6 +276,7 @@ int main(void)
 
     for (;;)
     {
+        restartSpacenavd("dfdg");
         openConnection();
         spnav_close();
        	while(spnav_open() == -1) {
