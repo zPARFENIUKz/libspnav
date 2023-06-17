@@ -273,10 +273,9 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-
+    restartSpacenavd("dfdg");
     for (;;)
     {
-        restartSpacenavd("dfdg");
         openConnection();
         spnav_close();
        	while(spnav_open() == -1) {
