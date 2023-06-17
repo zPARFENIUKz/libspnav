@@ -107,24 +107,24 @@ void restartSpacenavd(const char* deviceName)
         printf("restartSpacenavd()\n");
         if (pid = fork() == 0)
         {
-            printf("Зашел в созданный процесс\n");
+            printf("In created process\n");
             char buffer[128];
             getcwd(buffer, sizeof buffer);
             strcat(buffer, "/spacenavd/spacenavd\n");
             if (isThereSpnavrcForDevice(deviceName)) 
             {
-                printf("Был найдет файл конфигурации для %s\n", deviceName);
+                printf("Config file was found for %s\n", deviceName);
                 char *spnavrcFilePath[128];
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
                 if (spacenavdPid != 0) 
                 {
-                    printf("убиваем предыдущего демона с pid = %d\n", spacenavdPid);
+                    printf("killing prev daemon with pid = %d\n", spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 } else 
                 {
-                    printf("нет запущенного демона\n");
+                    printf("there're no running daemons'\n");
                 }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
@@ -133,7 +133,7 @@ void restartSpacenavd(const char* deviceName)
             {
                 printf("starting default daemon\n");
                 if (spacenavdPid != 0) {
-                    printf("убиваем предыдущего демона с pid = %d\n", spacenavdPid);
+                    printf("Killing prev daemon with pid = %d\n", spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 }
                 printf("Starting default daemon\n");
@@ -142,7 +142,7 @@ void restartSpacenavd(const char* deviceName)
             }
         } else 
         {
-            printf("Зашел в родительский процесс и присвоил пид дочернего = %s\n", pid);
+            printf("In parent process and child pid is %s\n", pid);
             spacenavdPid = pid;
         }
     
@@ -300,7 +300,7 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    printf("Попытка стартовать демона\n");
+    printf("Trying to start daemon\n");
     restartSpacenavd("dfdg");
     for (;;)
     {
