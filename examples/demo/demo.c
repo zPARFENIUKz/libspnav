@@ -66,7 +66,7 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     strcat(spnavrcFilePath, "/spnavrc");
 
     printf("isThereSpnavrcForDevice() %s\n", spnavrcFilePath);
-    if (access(spnavrcFilePath, F_OK)) 
+    if (access(spnavrcFilePath, F_OK) == 0) 
     {
         printf("returning true\n");
         return true;
@@ -311,6 +311,8 @@ int main(void)
        	while(spnav_open() == -1) {
 
         }
+        spnav_dev_name(buf, sizeof buf);
+        restartSpacenavd(buf);
         if (tryToPrintDevice())
         {
             if (buttonWasPressed())
