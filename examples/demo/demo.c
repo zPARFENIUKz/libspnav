@@ -69,11 +69,11 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     if (fp == NULL) 
     {
         fclose(fp);
-        printf("returning false");
+        printf("returning false\n");
         return false;
     } else 
     {
-        printf("returning true");
+        printf("returning true\n");
         fclose(fp);
         return true;
     }
