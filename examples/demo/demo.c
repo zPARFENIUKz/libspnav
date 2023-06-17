@@ -43,7 +43,7 @@ int xsock, ssock, maxfd;
 char buf[256];
 spnav_event sev;
 int demoNumber = 1;
-pid_t spacenavdPid;
+pid_t spacenavdPid = 0;
 const char *spacenavdDefaultStartScript = "./spacenavd/spacenavd -v -d";
 const char *spacenavdWithSpnavrcStartScript = "./spacenavd/spacenavd -v -d -c ";
 
@@ -78,7 +78,10 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
 
 void restartDefaultSpacenavd(void) 
 {
-    stopSpacenavd();
+    if (spacenavdPid != 0) 
+    {
+        stopSpacenavd();
+    }
     startDefaultSpacenavd();
 }
 
@@ -90,35 +93,44 @@ void startSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 
 void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath) 
 {
-    stopSpacenavd();
+    if (spacenavdPid != 0) 
+    {
+        stopSpacenavd();
+    }
     startSpacenavdWithSpnavrc(spnavrcFilePath);
 }
 
 void restartSpacenavd(const char* deviceName) 
 {
     pid_t pid;
-    switch(pid = fork()) 
-    {
-        spacenavdPid = getPid();
-        case -1:
-        printf("spacenavd starting failed");
-            exit(1);
-            break;
-        case 0:
-            
+    
+        if (pid = fork() == 0)
+        {
+            char buffer[128];
+            getcwd(buffer, sizeof buffer);
+            strcat(buffer, "/spacenavd/spacenavd");
             if (isThereSpnavrcForDevice(deviceName)) 
             {
                 char *spnavrcFilePath[128];
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
-                restartSpacenavdWithSpnavrc(spnavrcFilePath);
+                kill(spacenavdPid, SIGKILL);
+                printf("starting daemon with: %s\n", spnavrcFilePath);
+                //restartSpacenavdWithSpnavrc(spnavrcFilePath);
+                execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath);
             } else 
             {
+                printf("starting default daemon");
+                kill(spacenavdPid, SIGKILL);
+                execl(buffer, buffer, "-v", "-d");
                 restartDefaultSpacenavd();
             }
-            break;
-    }
+        } else 
+        {
+            spacenavdPid = pid;
+        }
+    
 }
 
 void printDeviceInfo(const char* deviceName) 
