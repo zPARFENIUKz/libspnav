@@ -64,7 +64,7 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
 
-    printf("isThereSpnavrcForDevice()");
+    printf("isThereSpnavrcForDevice()\n");
     FILE *fp = fopen(spnavrcFilePath, "r");
     if (fp == NULL) 
     {
@@ -114,6 +114,7 @@ void restartSpacenavd(const char* deviceName)
             char buffer[128];
             getcwd(buffer, sizeof buffer);
             strcat(buffer, "/spacenavd/spacenavd\n");
+            printf("%s\n", buffer);
             if (isThereSpnavrcForDevice(deviceName)) 
             {
                 printf("Config file was found for %s\n", deviceName);
