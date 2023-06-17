@@ -59,7 +59,8 @@ void stopSpacenavd(void)
 }
 
 bool isThereSpnavrcForDevice(const char *deviceName) {
-    char *spnavrcFilePath[128] = "\0";
+    char spnavrcFilePath[128] = "\0";
+    
     strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
