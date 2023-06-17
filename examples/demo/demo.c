@@ -44,8 +44,8 @@ char buf[256];
 spnav_event sev;
 int demoNumber = 1;
 pid_t spacenavdPid = 0;
-const char *spacenavdDefaultStartScript = "./spacenavd/spacenavd -v -d";
-const char *spacenavdWithSpnavrcStartScript = "./spacenavd/spacenavd -v -d -c ";
+const char *spacenavdDefaultStartScript = "./spacenavd/spacenavd -v";
+const char *spacenavdWithSpnavrcStartScript = "./spacenavd/spacenavd -v -c ";
 
 
 void startDefaultSpacenavd(void) 
