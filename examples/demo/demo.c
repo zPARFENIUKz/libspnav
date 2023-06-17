@@ -143,8 +143,8 @@ void restartSpacenavd(const char* deviceName)
             }
         } else 
         {
-            printf("In parent process and child pid is %s\n", pid);
             spacenavdPid = pid;
+            printf("In parent process and child pid is %s\n", spacenavdPid);
         }
     
 }
