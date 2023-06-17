@@ -40,7 +40,7 @@ unsigned int scene;
 bool isPrintedAboutDevice = false;
 bool isPrintedAboutConnectDevice = false;
 int xsock, ssock, maxfd;
-char buf[256];
+char buf[256] = "\0";
 spnav_event sev;
 int demoNumber = 1;
 pid_t spacenavdPid = 0;
