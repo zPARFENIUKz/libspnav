@@ -302,7 +302,15 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    printf("Trying to start daemon\n");
+    pid_t pidd = fork();
+    if (pidd == 0) {
+        execl("/home/greg/libspnav/examples/demo/spacenavd/spacenavd", "-v", "-d", NULL);
+        return 0;
+    } else 
+    {
+        printf("%d\n", pidd);
+    }
+    /*printf("Trying to start daemon\n");
     restartSpacenavd("dfdg");
     for (;;)
     {
@@ -329,7 +337,7 @@ int main(void)
             continue;
         }
         runDemo();
-    }
+    }*/
     return 0;
 }
 
