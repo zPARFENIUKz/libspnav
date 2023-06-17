@@ -138,6 +138,7 @@ void restartSpacenavd(const char* deviceName)
                     kill(spacenavdPid, SIGKILL);
                 }
                 printf("starting default daemon\n");
+                printf("%s\n", buffer);
                 execl(buffer, buffer, "-v", "-d");
                 //restartDefaultSpacenavd();
             }
