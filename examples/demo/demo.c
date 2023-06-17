@@ -64,13 +64,16 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
 
+    printf("isThereSpnavrcForDevice()");
     FILE *fp = fopen(spnavrcFilePath, "r");
     if (fp == NULL) 
     {
         fclose(fp);
+        printf("returning false");
         return false;
     } else 
     {
+        printf("returning true");
         fclose(fp);
         return true;
     }
