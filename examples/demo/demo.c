@@ -109,14 +109,14 @@ void restartSpacenavd(const char* deviceName)
         if (pid = fork() == 0)
         {
             printf("In created process\n");
-            char buffer[128];
+            char buffer[128] = "\0";
             getcwd(buffer, sizeof buffer);
             strcat(buffer, "/spacenavd/spacenavd\n");
             printf("%s\n", buffer);
             if (isThereSpnavrcForDevice(deviceName)) 
             {
                 printf("Config file was found for %s\n", deviceName);
-                char *spnavrcFilePath[128];
+                char spnavrcFilePath[128] = "\0";
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
