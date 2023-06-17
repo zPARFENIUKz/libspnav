@@ -130,7 +130,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
-                execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath);
+                execl(buffer, buffer, "-v", "-d", "-c", spnavrcFilePath, NULL);
             } else 
             {
                 if (spacenavdPid != 0) {
@@ -139,7 +139,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
-                execl(buffer, buffer, "-v", "-d");
+                execl(buffer, buffer, "-v", "-d", NULL);
                 //restartDefaultSpacenavd();
             }
         } else 
