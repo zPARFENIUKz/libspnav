@@ -139,7 +139,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
-                execl(buffer, buffer "-v", "-d", NULL);
+                execl(buffer, "-v", "-d", NULL);
                 //restartDefaultSpacenavd();
             }
         } else 
