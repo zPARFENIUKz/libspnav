@@ -322,9 +322,9 @@ int main(void)
 
         }
         spnav_dev_name(buf, sizeof buf);
-        restartSpacenavd(buf);
         if (tryToPrintDevice())
         {
+            restartSpacenavd(buf);
             if (buttonWasPressed())
             {
                 prepareForDemo();
