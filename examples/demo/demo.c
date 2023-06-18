@@ -159,10 +159,10 @@ bool tryToPrintDevice() {
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
-    /*if (strcmp(prevDevice, buf) != 0) 
+    if (strcmp(prevDevice, buf) != 0) 
     {
         restartSpacenavd(buf);
-    }*/
+    }
     return true;
 }
 
