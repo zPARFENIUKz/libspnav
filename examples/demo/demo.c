@@ -124,7 +124,10 @@ void restartSpacenavd(const char* deviceName)
                 if (spacenavdPid != 0) 
                 {
                     printf("killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    kill(spacenavdPid, SIGKILL);
+                    char killCommand[128] = "killall -s SIGKILL ";
+                    strcat(killCommand, buffer);
+                    system(killCommand);
+                    //kill(spacenavdPid, SIGKILL);
                 } else 
                 {
                     printf("there're no running daemons'\n");
@@ -138,7 +141,10 @@ void restartSpacenavd(const char* deviceName)
                 printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
                 if (spacenavdPid != 0) {
                     printf("Killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    kill(spacenavdPid, SIGKILL);
+                    char killCommand[128] = "killall -s SIGKILL ";
+                    strcat(killCommand, buffer);
+                    system(killCommand);
+                    //kill(spacenavdPid, SIGKILL);
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
