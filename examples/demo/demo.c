@@ -103,10 +103,10 @@ void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 
 void restartSpacenavd(const char* deviceName) 
 {
-    pid_t pid;
     
         printf("restartSpacenavd()\n");
-        if (pid = fork() == 0)
+        pid_t pid = fork();
+        if (pid == 0)
         {
             printf("In created process\n");
             char buffer[128] = "\0";
@@ -122,7 +122,7 @@ void restartSpacenavd(const char* deviceName)
                 strcat(spnavrcFilePath, "/spnavrc");
                 if (spacenavdPid != 0) 
                 {
-                    printf("killing prev daemon with pid = %d\n", spacenavdPid);
+                    printf("killing prev daemon with pid = %d\n", (int) spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 } else 
                 {
@@ -134,7 +134,7 @@ void restartSpacenavd(const char* deviceName)
             } else 
             {
                 if (spacenavdPid != 0) {
-                    printf("Killing prev daemon with pid = %d\n", spacenavdPid);
+                    printf("Killing prev daemon with pid = %d\n", (int) spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
                 }
                 printf("starting default daemon\n");
@@ -145,7 +145,7 @@ void restartSpacenavd(const char* deviceName)
         } else 
         {
             spacenavdPid = pid;
-            printf("In parent process and child pid is %s\n", spacenavdPid);
+            printf("In parent process and child pid is %d\n", (int) spacenavdPid);
         }
     
 }
@@ -303,16 +303,6 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    /*pid_t pidd = fork();
-    if (pidd == 0) {
-        execl("/home/greg/libspnav/examples/demo/spacenavd/spacenavd", "-v", "-d", NULL);
-    } else 
-    {
-        printf("%d\n", pidd);
-        kill(pidd, SIGKILL);
-        printf("process with pid = %d was killed\n", pidd);
-    }
-    return 0;*/
     printf("Trying to start daemon\n");
     restartSpacenavd("dfdg");
     for (;;)
