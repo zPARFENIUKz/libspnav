@@ -124,9 +124,7 @@ void restartSpacenavd(const char* deviceName)
                 if (spacenavdPid != 0) 
                 {
                     printf("killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    char killCommand[256] = "ps -ef | grep '";
-                    strcat(killCommand, buffer);
-                    strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9");
+                    char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
                     system(killCommand);
                     //kill(spacenavdPid, SIGKILL);
                 } else 
@@ -142,9 +140,7 @@ void restartSpacenavd(const char* deviceName)
                 printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
                 if (spacenavdPid != 0) {
                     printf("Killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    char killCommand[256] = "ps -ef | grep '";
-                    strcat(killCommand, buffer);
-                    strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9");
+                    char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
                     system(killCommand);
                     //kill(spacenavdPid, SIGKILL);
                 }
