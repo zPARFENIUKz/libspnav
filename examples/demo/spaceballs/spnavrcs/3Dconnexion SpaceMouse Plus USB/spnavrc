@@ -23,9 +23,10 @@ dead-zone = 2
 
 # Selectively invert translation and rotation axes. Valid values are
 # combinations of the letters x, y, and z.
-#invert-rot = xx
+invert-rot = yz
 invert-trans = zz
-
+invert-trans = yy
+ 
 
 # Swap Y and Z axes
 swap-yz = true
