@@ -252,12 +252,11 @@ void runDemo()
     			redisplay_pending = 0;
     			redraw();
     		}
+            end:
+    	        glDeleteTextures(1, &grid_tex);
+    	        destroy_xwin();
+    	        spnav_close();
     	}
-
-    end:
-    	glDeleteTextures(1, &grid_tex);
-    	destroy_xwin();
-    	spnav_close();
 }
 
 void openConnection()
