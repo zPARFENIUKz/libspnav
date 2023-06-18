@@ -19,7 +19,7 @@ sensitivity-rotation = 1.0
 
 # Dead zone; any motion less than this number is discarded as noise.
 dead-zone = 2
-
+ 
 
 # Selectively invert translation and rotation axes. Valid values are
 # combinations of the letters x, y, and z.
