@@ -111,6 +111,7 @@ void restartSpacenavd(const char* deviceName)
         char killCommand[256] = "ps -ef | grep './spacenavd/spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
         printf("killCommand: %s\n", killCommand);
         system(killCommand);
+        sleep(1);
         if (isThereSpnavrcForDevice(deviceName)) 
         {
             printf("Config file was found for %s\n", deviceName);
