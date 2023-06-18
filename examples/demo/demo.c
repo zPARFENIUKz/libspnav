@@ -20,6 +20,7 @@
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/";
+char char *prevDevice = "\0";
 
 void gen_textures(void);
 void gen_scene(void);
@@ -158,7 +159,10 @@ bool tryToPrintDevice() {
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
-    restartSpacenavd(buf);
+    if (strcmp(prevDevice, buf) != 0) 
+    {
+        restartSpacenavd(buf);
+    }
     return true;
 }
 
