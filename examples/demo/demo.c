@@ -109,7 +109,7 @@ void restartSpacenavd(const char* deviceName)
 
         char killCommand[256] = "ps -ef | grep '";
         strcat(killCommand, buffer);
-        strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
+        strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9");
         printf("killCommand: %s\n", killCommand);
         system(killCommand);
         if (isThereSpnavrcForDevice(deviceName)) 
@@ -122,7 +122,7 @@ void restartSpacenavd(const char* deviceName)
             char finalCommand[256] = ".";
             strcat(finalCommand, buffer);
             strcat(finalCommand, " -c ");
-            strcat(finalCommand, spnavrcFilePath)
+            strcat(finalCommand, spnavrcFilePath);
             system(finalCommand);
         } else {
             printf("Config file doesnt found, starting default daemon");
