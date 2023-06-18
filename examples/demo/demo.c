@@ -176,7 +176,7 @@ bool tryToPrintDevice() {
 bool tryToPrintConnectDeviceMessage()
 {
     if (isPrintedAboutConnectDevice) return true;
-    //system("clear");
+    system("clear");
     int i;
     for (i = 0; i < 20; ++i) {
             printf("\n");
