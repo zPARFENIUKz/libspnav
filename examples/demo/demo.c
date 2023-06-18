@@ -66,14 +66,14 @@ bool isThereSpnavrcForDevice(const char *deviceName) {
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
 
-    printf("isThereSpnavrcForDevice() %s\n", spnavrcFilePath);
+    //printf("isThereSpnavrcForDevice() %s\n", spnavrcFilePath);
     if (access(spnavrcFilePath, F_OK) == 0) 
     {
-        printf("returning true\n");
+        //printf("returning true\n");
         return true;
     } else 
     {
-        printf("returning false\n");
+        //printf("returning false\n");
         return false;
     }
 }
@@ -103,18 +103,19 @@ void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 }
 
 void restartSpacenavd(const char* deviceName) 
-{       printf("restartSpacenavd()\n");
+{
+        //printf("restartSpacenavd()\n");
         char buffer[128] = "\0";
         getcwd(buffer, sizeof buffer);
         strcat(buffer, "/spacenavd/spacenavd");
 
         char killCommand[256] = "ps -ef | grep './spacenavd/spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
-        printf("killCommand: %s\n", killCommand);
+        //printf("killCommand: %s\n", killCommand);
         system(killCommand);
         sleep(1);
         if (isThereSpnavrcForDevice(deviceName)) 
         {
-            printf("Config file was found for %s\n", deviceName);
+            //printf("Config file was found for %s\n", deviceName);
             char spnavrcFilePath[128] = "\0";
             strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
             strcat(spnavrcFilePath, deviceName);
@@ -124,11 +125,11 @@ void restartSpacenavd(const char* deviceName)
             strcat(finalCommand, " -c '");
             strcat(finalCommand, spnavrcFilePath);
             strcat(finalCommand, "'");
-            printf("starting configured daemon with the command: %s", finalCommand);
+            //printf("starting configured daemon with the command: %s\n", finalCommand);
 
             system(finalCommand);
         } else {
-            printf("Config file doesnt found, starting default daemon");
+            //printf("Config file doesnt found, starting default daemon\n");
             char finalCommand[256] = "./spacenavd/spacenavd";
             system(finalCommand);
         }    
@@ -144,6 +145,7 @@ void printDeviceInfo(const char* deviceName)
     if (fp == NULL) 
     {
         printf("Error: could not open file %s\n", finalPath);
+        printf("Press any device button to start\n")
         return;
     }
     const unsigned MAX_LENGTH = 256;
@@ -158,7 +160,7 @@ void printDeviceInfo(const char* deviceName)
 bool tryToPrintDevice() {
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
-    //system("clear");
+    system("clear");
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
@@ -190,20 +192,20 @@ bool tryToPrintConnectDeviceMessage()
 
 bool prepareForDemo()
 {
-    printf("Trying to connect with x server\n");
+    //printf("Trying to connect with x server\n");
     if(!(dpy = XOpenDisplay(0))) {
-    		printf("failed to connect to the X server");
+    		//printf("failed to connect to the X server");
     		return false;
     	}
         
-        printf("Trying to create_xwin\n");
+        //printf("Trying to create_xwin\n");
     	if(create_xwin("libspnav fly", 1080, 1080) == -1) {
-    	    printf("create_xwin failed");
+    	    //printf("create_xwin failed");
     		return false;
     	}
 
     	/* XXX: initialize the position vector & orientation quaternion */
-        printf("posrot init\n");
+        //printf("posrot init\n");
     	spnav_posrot_init(&posrot);
 
     	glEnable(GL_DEPTH_TEST);
@@ -213,9 +215,9 @@ bool prepareForDemo()
     	glFogf(GL_FOG_START, GRID_SZ / 4);
     	glFogf(GL_FOG_END, GRID_SZ);
 
-        printf("trying gen_textures()\n");
+        //printf("trying gen_textures()\n");
     	gen_textures();
-        printf("trying gen_scene()\n");
+        //printf("trying gen_scene()\n");
     	gen_scene();
 
     	/* XXX: grab the Xlib socket and the libspnav socket. we'll need them in the
@@ -295,7 +297,7 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    printf("Trying to start daemon\n");
+    //printf("Trying to start daemon\n");
     restartSpacenavd("dfdg");
     for (;;)
     {
@@ -305,7 +307,7 @@ int main(void)
         {
             if (buttonWasPressed())
             {
-                printf("button was pressed\n");
+                //printf("button was pressed\n");
                 prepareForDemo();
             } else
             {
@@ -382,9 +384,9 @@ void gen_textures(void)
 void gen_scene(void)
 {
 	srand(0);
-    printf("in gen_scene() trying to glGenLists(1)\n");
+    //printf("in gen_scene() trying to glGenLists(1)\n");
 	scene = glGenLists(1);
-    printf("in gen_scene() trying to glNewList(scene, GL_COMPILE)\n");
+    //printf("in gen_scene() trying to glNewList(scene, GL_COMPILE)\n");
 	glNewList(scene, GL_COMPILE);
 
 
@@ -395,7 +397,7 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
-    printf("int gen_scene() just before switch()\n");
+    //printf("int gen_scene() just before switch()\n");
 	switch (demoNumber) {
 	    case 1:
 	        genMyCubeScene();
