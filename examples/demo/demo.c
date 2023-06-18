@@ -20,7 +20,7 @@
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/";
-char char *prevDevice = "\0";
+char *prevDevice = "\0";
 
 void gen_textures(void);
 void gen_scene(void);
