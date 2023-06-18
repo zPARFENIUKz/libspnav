@@ -102,62 +102,34 @@ void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 }
 
 void restartSpacenavd(const char* deviceName) 
-{
-    
-        printf("restartSpacenavd()\n");
-        pid_t pid = fork();
-        if (pid == 0)
+{       printf("restartSpacenavd()\n");
+        char buffer[128] = "\0";
+        getcwd(buffer, sizeof buffer);
+        strcat(buffer, "/spacenavd/spacenavd");
+
+        char killCommand[256] = "ps -ef | grep '";
+        strcat(killCommand, buffer);
+        strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
+        printf("killCommand: %s\n", killCommand);
+        system(killCommand);
+        if (isThereSpnavrcForDevice(deviceName)) 
         {
-            printf("In created process with pid = %d\n", (int) getpid());
-            char buffer[128] = "\0";
-            getcwd(buffer, sizeof buffer);
-            strcat(buffer, "/spacenavd/spacenavd");
-            printf("%s\n", buffer);
-            if (isThereSpnavrcForDevice(deviceName)) 
-            {
-                printf("Config file was found for %s\n", deviceName);
-                char spnavrcFilePath[128] = "\0";
-                strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
-                strcat(spnavrcFilePath, deviceName);
-                strcat(spnavrcFilePath, "/spnavrc");
-                printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
-                if (spacenavdPid != 0) 
-                {
-                    printf("killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
-                    system(killCommand);
-                    //kill(spacenavdPid, SIGKILL);
-                    sleep(1);
-                } else 
-                {
-                    printf("there're no running daemons'\n");
-                }
-                printf("starting daemon with: %s\n", spnavrcFilePath);
-                //restartSpacenavdWithSpnavrc(spnavrcFilePath);
-                printf("EXECL %s %s %s\n", buffer, "-c", spnavrcFilePath);
-                execl(buffer, buffer, "-c", spnavrcFilePath, NULL);
-            } else 
-            {
-                printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
-                if (spacenavdPid != 0) {
-                    printf("Killing prev daemon with pid = %d\n", (int) spacenavdPid);
-                    char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
-                    system(killCommand);
-                    //kill(spacenavdPid, SIGKILL);
-                    sleep(1);
-                }
-                printf("starting default daemon\n");
-                printf("%s\n", buffer);
-                printf("EXECL %s\n", buffer);
-                execl(buffer, buffer, NULL);
-                //restartDefaultSpacenavd();
-            }
-        } else 
-        {
-            spacenavdPid = pid;
-            printf("In parent process and child pid is %d\n", (int) spacenavdPid);
-        }
-    
+            printf("Config file was found for %s\n", deviceName);
+            char spnavrcFilePath[128] = "\0";
+            strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
+            strcat(spnavrcFilePath, deviceName);
+            strcat(spnavrcFilePath, "/spnavrc");
+            char finalCommand[256] = ".";
+            strcat(finalCommand, buffer);
+            strcat(finalCommand, " -c ");
+            strcat(finalCommand, spnavrcFilePath)
+            system(finalCommand);
+        } else {
+            printf("Config file doesnt found, starting default daemon");
+            char finalCommand[256] = ".";
+            strcat(finalCommand, buffer);
+            system(finalCommand);
+        }    
 }
 
 void printDeviceInfo(const char* deviceName) 
