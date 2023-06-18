@@ -378,9 +378,11 @@ void gen_textures(void)
 void gen_scene(void)
 {
 	srand(0);
-
+    printf("in gen_scene() trying to glGenLists(1)\n");
 	scene = glGenLists(1);
+    printf("in gen_scene() trying to glNewList(scene, GL_COMPILE)\n");
 	glNewList(scene, GL_COMPILE);
+
 
 	glEnable(GL_TEXTURE_2D);
 	/*glEnable(GL_FOG)*/;
@@ -389,6 +391,7 @@ void gen_scene(void)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_FOG);
 	glTranslatef(0, 0, 0);	/* view matrix, push back to see the cube */
+    printf("int gen_scene() just before switch()\n");
 	switch (demoNumber) {
 	    case 1:
 	        genMyCubeScene();
