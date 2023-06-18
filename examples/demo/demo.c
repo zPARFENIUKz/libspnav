@@ -127,6 +127,7 @@ void restartSpacenavd(const char* deviceName)
                     char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
                     system(killCommand);
                     //kill(spacenavdPid, SIGKILL);
+                    sleep(1);
                 } else 
                 {
                     printf("there're no running daemons'\n");
@@ -143,6 +144,7 @@ void restartSpacenavd(const char* deviceName)
                     char killCommand[256] = "ps -ef | grep 'spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
                     system(killCommand);
                     //kill(spacenavdPid, SIGKILL);
+                    sleep(1);
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
