@@ -107,9 +107,7 @@ void restartSpacenavd(const char* deviceName)
         getcwd(buffer, sizeof buffer);
         strcat(buffer, "/spacenavd/spacenavd");
 
-        char killCommand[256] = "ps -ef | grep '";
-        strcat(killCommand, buffer);
-        strcat(killCommand, "' | grep -v grep | awk '{print $2}' | xargs -r kill -9");
+        char killCommand[256] = "ps -ef | grep './spacenavd/spacenavd' | grep -v grep | awk '{print $2}' | xargs -r kill -9";
         printf("killCommand: %s\n", killCommand);
         system(killCommand);
         if (isThereSpnavrcForDevice(deviceName)) 
