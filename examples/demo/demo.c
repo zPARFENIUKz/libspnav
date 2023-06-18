@@ -186,17 +186,20 @@ bool tryToPrintConnectDeviceMessage()
 
 bool prepareForDemo()
 {
+    printf("Trying to connect with x server\n");
     if(!(dpy = XOpenDisplay(0))) {
     		printf("failed to connect to the X server");
     		return false;
     	}
-
+        
+        printf("Trying to create_xwin\n");
     	if(create_xwin("libspnav fly", 1080, 1080) == -1) {
     	    printf("create_xwin failed");
     		return false;
     	}
 
     	/* XXX: initialize the position vector & orientation quaternion */
+        printf("posrot init\n");
     	spnav_posrot_init(&posrot);
 
     	glEnable(GL_DEPTH_TEST);
@@ -206,7 +209,9 @@ bool prepareForDemo()
     	glFogf(GL_FOG_START, GRID_SZ / 4);
     	glFogf(GL_FOG_END, GRID_SZ);
 
+        printf("trying gen_textures()\n");
     	gen_textures();
+        printf("trying gen_scene()\n");
     	gen_scene();
 
     	/* XXX: grab the Xlib socket and the libspnav socket. we'll need them in the
@@ -294,8 +299,10 @@ int main(void)
         spnav_dev_name(buf, sizeof buf);
         if (tryToPrintDevice())
         {
+            printf("Device info printed\n");
             if (buttonWasPressed())
             {
+                printf("button was pressed\n");
                 prepareForDemo();
             } else
             {
