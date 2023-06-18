@@ -119,15 +119,14 @@ void restartSpacenavd(const char* deviceName)
             strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
             strcat(spnavrcFilePath, deviceName);
             strcat(spnavrcFilePath, "/spnavrc");
-            char finalCommand[256] = ".";
-            strcat(finalCommand, buffer);
+
+            char finalCommand[256] = "./spacenavd/spacenavd";
             strcat(finalCommand, " -c ");
             strcat(finalCommand, spnavrcFilePath);
             system(finalCommand);
         } else {
             printf("Config file doesnt found, starting default daemon");
-            char finalCommand[256] = ".";
-            strcat(finalCommand, buffer);
+            char finalCommand[256] = "./spacenavd/spacenavd";
             system(finalCommand);
         }    
 }
