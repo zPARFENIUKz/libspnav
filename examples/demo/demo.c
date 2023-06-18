@@ -299,7 +299,6 @@ int main(void)
         spnav_dev_name(buf, sizeof buf);
         if (tryToPrintDevice())
         {
-            printf("Device info printed\n");
             if (buttonWasPressed())
             {
                 printf("button was pressed\n");
