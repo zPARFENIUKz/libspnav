@@ -131,7 +131,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting daemon with: %s\n", spnavrcFilePath);
                 //restartSpacenavdWithSpnavrc(spnavrcFilePath);
-                execl(buffer, "-v", "-c", spnavrcFilePath, NULL);
+                execl(buffer, "-c", spnavrcFilePath, NULL);
             } else 
             {
                 printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
@@ -141,7 +141,7 @@ void restartSpacenavd(const char* deviceName)
                 }
                 printf("starting default daemon\n");
                 printf("%s\n", buffer);
-                execl(buffer, "-v", NULL);
+                execl(buffer, NULL);
                 //restartDefaultSpacenavd();
             }
         } else 
