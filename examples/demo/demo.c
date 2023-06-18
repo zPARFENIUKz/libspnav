@@ -287,10 +287,6 @@ int main(void)
     for (;;)
     {
         openConnection();
-        spnav_close();
-       	while(spnav_open() == -1) {
-
-        }
         spnav_dev_name(buf, sizeof buf);
         if (tryToPrintDevice())
         {
