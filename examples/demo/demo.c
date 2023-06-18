@@ -108,7 +108,7 @@ void restartSpacenavd(const char* deviceName)
         pid_t pid = fork();
         if (pid == 0)
         {
-            printf("In created process\n");
+            printf("In created process with pid = %d\n", (int) getpid());
             char buffer[128] = "\0";
             getcwd(buffer, sizeof buffer);
             strcat(buffer, "/spacenavd/spacenavd");
@@ -120,6 +120,7 @@ void restartSpacenavd(const char* deviceName)
                 strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
                 strcat(spnavrcFilePath, deviceName);
                 strcat(spnavrcFilePath, "/spnavrc");
+                printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
                 if (spacenavdPid != 0) 
                 {
                     printf("killing prev daemon with pid = %d\n", (int) spacenavdPid);
@@ -133,6 +134,7 @@ void restartSpacenavd(const char* deviceName)
                 execl(buffer, "-v", "-c", spnavrcFilePath, NULL);
             } else 
             {
+                printf("In child process with pid = %d, spacenavdPid of running daemon = %d\n", (int) getpid(), (int) spacenavdPid);
                 if (spacenavdPid != 0) {
                     printf("Killing prev daemon with pid = %d\n", (int) spacenavdPid);
                     kill(spacenavdPid, SIGKILL);
