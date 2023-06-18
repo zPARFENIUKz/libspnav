@@ -145,7 +145,7 @@ void printDeviceInfo(const char* deviceName)
     if (fp == NULL) 
     {
         printf("Error: could not open file %s\n", finalPath);
-        printf("Press any device button to start\n")
+        printf("Press any device button to start\n");
         return;
     }
     const unsigned MAX_LENGTH = 256;
