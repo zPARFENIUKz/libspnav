@@ -549,7 +549,7 @@ void draw_box(float xsz, float ysz, float zsz)
 
 void genMyCubeScene() 
 {
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    glPolygonMode( GL_FRONT, GL_LINE );
     int i = 0, j = 0, k = 0;
     glBegin(GL_QUADS);
     for (i = 0; i < 9; ++i) 
