@@ -550,7 +550,7 @@ void draw_box(float xsz, float ysz, float zsz)
 void genMyCubeScene() 
 {
     glPolygonMode( GL_FRONT, GL_LINE );
-    glBegin(GL_QUADS);
+    glBegin(GL_LINES);
     int i = 0, j = 0, k = 0;
     for (i = 0; i < 9; ++i) 
     {
@@ -566,6 +566,10 @@ void genMyCubeScene()
                 glVertex3f(-3 + i, -5 + j, -3 + k);
                 glVertex3f(-3 + i, -3 + j, -3 + k);
                 glVertex3f(-5 + i, -3 + j, -3 + k);
+                glVertex3f(-5 + i- 1, -5 + j - 1, -3 + k - 1);
+                glVertex3f(-3 + i - 1, -5 + j - 1, -3 + k - 1);
+                glVertex3f(-3 + i - 1, -3 + j- 1, -3 + k - 1);
+                glVertex3f(-5 + i - 1, -3 + j - , -3 + k - 1);
                 /* face +X */
                 glNormal3f(1, 0, 0);
                 glColor3f(1, 1, 1);
