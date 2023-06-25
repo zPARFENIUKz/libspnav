@@ -569,7 +569,7 @@ void genMyCubeScene()
                 glVertex3f(-5 + i- 1, -5 + j - 1, -3 + k - 1);
                 glVertex3f(-3 + i - 1, -5 + j - 1, -3 + k - 1);
                 glVertex3f(-3 + i - 1, -3 + j- 1, -3 + k - 1);
-                glVertex3f(-5 + i - 1, -3 + j - , -3 + k - 1);
+                glVertex3f(-5 + i - 1, -3 + j - 1, -3 + k - 1);
                 /* face +X */
                 glNormal3f(1, 0, 0);
                 glColor3f(1, 1, 1);
