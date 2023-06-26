@@ -150,6 +150,7 @@ void printDeviceInfo(const char* deviceName)
 }
 
 bool tryToPrintDevice() {
+    buf[0] = "\0";
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
     system("clear");
@@ -159,6 +160,7 @@ bool tryToPrintDevice() {
     if (strcmp(prevDevice, buf) != 0) 
     {
         restartSpacenavd(buf);
+        prevDevice[0] = "\0";
         strcpy(prevDevice, buf);
     }
     return true;
@@ -487,6 +489,7 @@ void handle_spnav_event(spnav_event *ev)
 		     spnav_posrot_init(&posrot);
              redisplay_pending = 1;
 		 } else if (sev.button.press){
+            spnav_posrot_init(&posrot);
 		    if (demoNumber == 3) demoNumber = 1;
 		    else ++demoNumber;
 		    gen_scene();
