@@ -288,16 +288,15 @@ bool buttonWasPressed()
     FD_SET(xsock, &rdset);
     FD_SET(ssock, &rdset);
 
-
-    /* XXX: handle any pending X events */
-    if(FD_ISSET(xsock, &rdset)) {
+    if(FD_ISSET(ssock, &rdset)) 
+    {
         while(spnav_poll_event(&sev))
+        {
+            if (sev.type == SPNAV_EVENT_BUTTON)
             {
-                if (sev.type == SPNAV_EVENT_BUTTON)
-                {
-                    return true;
-                }
+                return true;
             }
+        }
     }
     return false;
 }
