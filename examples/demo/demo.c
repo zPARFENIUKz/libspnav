@@ -151,15 +151,16 @@ void printDeviceInfo(const char* deviceName)
 
 bool tryToPrintDevice() {
     buf[0] = "\0";
-    if (isPrintedAboutDevice) return true;
     if (spnav_dev_name(buf, sizeof buf) == -1) 
     {
         sleep(1);
         if (spnav_dev_name(buf, sizeof buf) == -1) 
         {
+            isPrintedAboutDevice = false;
             return false;
         }
     }
+    if (isPrintedAboutDevice) return true;
     system("clear");
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
@@ -225,8 +226,6 @@ bool prepareForDemo()
 
 void runDemo()
 {
-    isPrintedAboutDevice = false;
-    isPrintedAboutConnectDevice = false;
     for(;;) {
     		fd_set rdset;
 
@@ -244,7 +243,7 @@ void runDemo()
     				XNextEvent(dpy, &xev);
 
     				if(handle_xevent(&xev) != 0) {
-    					goto end;
+    					//goto end;
     				}
     				if (!tryToPrintDevice(buf))
     				{
@@ -282,14 +281,14 @@ void openConnection()
 
 bool buttonWasPressed()
 {
-    if(spnav_poll_event(&sev))
-    {
-        if (sev.type == SPNAV_EVENT_BUTTON)
+    while(spnav_poll_event(&sev))
         {
-            return true;
+            if (sev.type == SPNAV_EVENT_BUTTON)
+            {
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
 }
 int main(void)
 {
@@ -303,9 +302,8 @@ int main(void)
             if (buttonWasPressed())
             {
                 prepareForDemo();
-                runDemo();
             } else
-            { 
+            {
                 continue;
             }
 
@@ -314,6 +312,7 @@ int main(void)
             tryToPrintConnectDeviceMessage();
             continue;
         }
+        runDemo();
     }
     return 0;
 }
