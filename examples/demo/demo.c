@@ -37,6 +37,7 @@ void genFlyScene(void);
 struct spnav_posrot posrot;
 
 unsigned int grid_tex, box_tex;
+bool isDemoStarted = false;
 unsigned int scene;
 bool isPrintedAboutDevice = false;
 bool isPrintedAboutConnectDevice = false;
@@ -153,7 +154,7 @@ bool tryToPrintDevice() {
     buf[0] = "\0";
     if (spnav_dev_name(buf, sizeof buf) == -1) 
     {
-        sleep(1);
+        if (!isDemoStarted) sleep(1);
         if (spnav_dev_name(buf, sizeof buf) == -1) 
         {
             isPrintedAboutDevice = false;
@@ -226,6 +227,7 @@ bool prepareForDemo()
 
 void runDemo()
 {
+    isDemoStarted = true;
     for(;;) {
     		fd_set rdset;
 
@@ -265,6 +267,7 @@ void runDemo()
     		}
     	}
     end:
+        isDemoStarted = false;
         glDeleteTextures(1, &grid_tex);
     	destroy_xwin();
     	spnav_close();
