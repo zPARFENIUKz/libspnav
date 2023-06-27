@@ -281,14 +281,26 @@ void openConnection()
 
 bool buttonWasPressed()
 {
-    while(spnav_poll_event(&sev))
-        {
-            if (sev.type == SPNAV_EVENT_BUTTON)
+    fd_set rdset;
+
+    /* XXX: add both sockets to the file descriptor set, to monitor both */
+    FD_ZERO(&rdset);
+    FD_SET(xsock, &rdset);
+    FD_SET(ssock, &rdset);
+
+    while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
+
+    /* XXX: handle any pending X events */
+    if(FD_ISSET(xsock, &rdset)) {
+        while(spnav_poll_event(&sev))
             {
-                return true;
+                if (sev.type == SPNAV_EVENT_BUTTON)
+                {
+                    return true;
+                }
             }
-        }
-        return false;
+    }
+    return false;
 }
 int main(void)
 {
