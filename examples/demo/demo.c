@@ -240,10 +240,12 @@ void runDemo()
     				XNextEvent(dpy, &xev);
 
     				if(handle_xevent(&xev) != 0) {
+                        printf("handle_xevent failed");
     					goto end;
     				}
-    				if (!tryToPrintDevice(buf))
+    				if (!tryToPrintDevice())
     				{
+                        printf("tryToPrintDevice failed");
     				    goto end;
     				}
     			}
@@ -289,6 +291,7 @@ bool buttonWasPressed()
 }
 int main(void)
 {
+    tryToPrintDevice();
     restartSpacenavd("dfdg");
     prevDevice[0] = "\0";
     for (;;)
