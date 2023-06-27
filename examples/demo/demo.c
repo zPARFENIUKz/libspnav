@@ -237,12 +237,10 @@ void runDemo()
     				XNextEvent(dpy, &xev);
 
     				if(handle_xevent(&xev) != 0) {
-                        printf("handle_xevent failed\n");
     					goto end;
     				}
     				if (!tryToPrintDevice())
     				{
-                        printf("tryToPrintDevice failed\n");
     				    goto end;
     				}
     			}
@@ -261,9 +259,11 @@ void runDemo()
     		}
     	}
     end:
-        glDeleteTextures(1, &grid_tex);
-    	destroy_xwin();
-    	spnav_close();
+        if (!tryToPrintDevice()) {
+            glDeleteTextures(1, &grid_tex);
+    	    destroy_xwin();
+    	    spnav_close();
+        }
 }
 
 void openConnection()
@@ -292,16 +292,24 @@ int main(void)
     prevDevice[0] = "\0";
     for (;;)
     {
+        sleep(1);
         openConnection();
         spnav_dev_name(buf, sizeof buf);
-        if (tryToPrintDevice())
+        if (!isPrintedAboutDevice)
         {
-            if (buttonWasPressed())
+            if (tryToPrintDevice()) 
             {
-                prepareForDemo();
-            } else
+                if (buttonWasPressed())
+                {
+                    prepareForDemo();
+                } else
+                {
+                    continue;
+                }
+            } else 
             {
-                continue;
+                isPrintedAboutDevice = false;
+                isPrintedAboutConnectDevice = false;
             }
 
         } else
