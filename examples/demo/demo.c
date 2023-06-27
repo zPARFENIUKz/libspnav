@@ -295,7 +295,7 @@ int main(void)
         sleep(1);
         openConnection();
         spnav_dev_name(buf, sizeof buf);
-        if (!isPrintedAboutDevice)
+        if (isPrintedAboutDevice || tryToPrintDevice()) 
         {
             if (tryToPrintDevice()) 
             {
@@ -308,11 +308,10 @@ int main(void)
                 }
             } else 
             {
-                isPrintedAboutDevice = false;
-                isPrintedAboutConnectDevice = false;
+                tryToPrintConnectDeviceMessage();
+                continue;
             }
-
-        } else
+        } else 
         {
             tryToPrintConnectDeviceMessage();
             continue;
