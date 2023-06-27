@@ -281,23 +281,28 @@ void openConnection()
 
 bool buttonWasPressed()
 {
+    ssock = spnav_fd();					/* libspnav socket */
+    maxfd = xsock > ssock ? xsock : ssock;
     fd_set rdset;
 
-    /* XXX: add both sockets to the file descriptor set, to monitor both */
-    FD_ZERO(&rdset);
-    FD_SET(xsock, &rdset);
-    FD_SET(ssock, &rdset);
+    		/* XXX: add both sockets to the file descriptor set, to monitor both */
+    		FD_ZERO(&rdset);
+    		FD_SET(ssock, &rdset);
 
-    if(FD_ISSET(ssock, &rdset)) 
-    {
-        while(spnav_poll_event(&sev))
-        {
-            if (sev.type == SPNAV_EVENT_BUTTON)
-            {
-                return true;
-            }
-        }
-    }
+    		//while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
+
+
+    		/* XXX: handle any pending spacenav events */
+    		if(FD_ISSET(ssock, &rdset)) {
+    			while(spnav_poll_event(&sev)) 
+                {
+    				if (sev.type == SPNAV_EVENT_BUTTON)
+                    {
+                        return true;
+                    }
+    			}
+    		}
+    
     return false;
 }
 int main(void)
