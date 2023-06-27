@@ -20,7 +20,7 @@
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/";
-char prevDevice[512];
+char prevDevice[128] = "\0";
 
 void gen_textures(void);
 void gen_scene(void);
@@ -41,7 +41,7 @@ unsigned int scene;
 bool isPrintedAboutDevice = false;
 bool isPrintedAboutConnectDevice = false;
 int xsock, ssock, maxfd;
-char buf[512];
+char buf[256] = "\0";
 spnav_event sev;
 int demoNumber = 1;
 pid_t spacenavdPid = 0;
@@ -60,8 +60,8 @@ void stopSpacenavd(void)
 }
 
 bool isThereSpnavrcForDevice(const char *deviceName) {
-    char spnavrcFilePath[128];
-    spnavrcFilePath[0] = "\0";
+    char spnavrcFilePath[128] = "\0";
+    
     strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
@@ -101,8 +101,7 @@ void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 
 void restartSpacenavd(const char* deviceName) 
 {
-        char buffer[128];
-        buffer[0] = "\0";
+        char buffer[128] = "\0";
         getcwd(buffer, sizeof buffer);
         strcat(buffer, "/spacenavd/spacenavd");
 
@@ -143,7 +142,6 @@ void printDeviceInfo(const char* deviceName)
     }
     const unsigned MAX_LENGTH = 256;
     char buffer[MAX_LENGTH];
-    buffer[0] = "\0";
     while (fgets(buffer, MAX_LENGTH, fp)) 
     {
         printf("%s\n", buffer);
@@ -152,10 +150,10 @@ void printDeviceInfo(const char* deviceName)
 }
 
 bool tryToPrintDevice() {
-    sleep(1);
+    buf[0] = "\0";
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
-    //system("clear");
+    system("clear");
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
@@ -172,12 +170,12 @@ bool tryToPrintDevice() {
 bool tryToPrintConnectDeviceMessage()
 {
     if (isPrintedAboutConnectDevice) return true;
-    //system("clear");
+    system("clear");
     int i;
-    for (i = 0; i < 30; ++i) {
+    for (i = 0; i < 20; ++i) {
             printf("\n");
         }
-    for (i = 0; i < 7; ++i) {
+    for (i = 0; i < 5; ++i) {
             printf("\t");
     }
     printf("Connect your device...\n");
@@ -239,7 +237,7 @@ void runDemo()
     				if(handle_xevent(&xev) != 0) {
     					goto end;
     				}
-    				if (!tryToPrintDevice())
+    				if (!tryToPrintDevice(buf))
     				{
     				    goto end;
     				}
@@ -259,11 +257,9 @@ void runDemo()
     		}
     	}
     end:
-        if (!tryToPrintDevice()) {
-            glDeleteTextures(1, &grid_tex);
-    	    destroy_xwin();
-    	    spnav_close();
-        }
+        glDeleteTextures(1, &grid_tex);
+    	destroy_xwin();
+    	spnav_close();
 }
 
 void openConnection()
@@ -289,11 +285,10 @@ bool buttonWasPressed()
 int main(void)
 {
     restartSpacenavd("dfdg");
-    prevDevice[0] = "\0";
     for (;;)
     {
         openConnection();
-        //spnav_dev_name(buf, sizeof buf);
+        spnav_dev_name(buf, sizeof buf);
         if (tryToPrintDevice())
         {
             if (buttonWasPressed())
