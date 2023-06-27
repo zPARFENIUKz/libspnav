@@ -158,7 +158,7 @@ bool tryToPrintDevice() {
     buf[0] = "\0";
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
-    system("clear");
+    //system("clear");
     printDeviceInfo(buf);
     isPrintedAboutDevice = true;
     isPrintedAboutConnectDevice = false;
@@ -175,7 +175,7 @@ bool tryToPrintDevice() {
 bool tryToPrintConnectDeviceMessage()
 {
     if (isPrintedAboutConnectDevice) return true;
-    system("clear");
+    //system("clear");
     int i;
     for (i = 0; i < 30; ++i) {
             printf("\n");
