@@ -288,7 +288,6 @@ bool buttonWasPressed()
 }
 int main(void)
 {
-    tryToPrintDevice();
     restartSpacenavd("dfdg");
     prevDevice[0] = "\0";
     for (;;)
