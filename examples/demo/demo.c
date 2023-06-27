@@ -41,7 +41,7 @@ unsigned int scene;
 bool isPrintedAboutDevice = false;
 bool isPrintedAboutConnectDevice = false;
 int xsock, ssock, maxfd;
-char buf[256];
+char buf[512];
 spnav_event sev;
 int demoNumber = 1;
 pid_t spacenavdPid = 0;
@@ -111,8 +111,7 @@ void restartSpacenavd(const char* deviceName)
         sleep(1);
         if (isThereSpnavrcForDevice(deviceName)) 
         {
-            char spnavrcFilePath[128];
-            spnavrcFilePath[0] = "\0";
+            char spnavrcFilePath[128] = "\0";
             strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
             strcat(spnavrcFilePath, deviceName);
             strcat(spnavrcFilePath, "/spnavrc");
@@ -131,8 +130,7 @@ void restartSpacenavd(const char* deviceName)
 
 void printDeviceInfo(const char* deviceName) 
 {
-    char finalPath[128];
-    finalPath[0] = "\0";
+    char finalPath[128] = "\0";
     strcat(finalPath, spaceballInfoDirectoryFilePath);
     strcat(finalPath, deviceName);
     strcat(finalPath, ".txt");
@@ -149,7 +147,6 @@ void printDeviceInfo(const char* deviceName)
     while (fgets(buffer, MAX_LENGTH, fp)) 
     {
         printf("%s\n", buffer);
-        buffer[0] = "\0";
     }
     fclose(fp);
 }
@@ -240,12 +237,12 @@ void runDemo()
     				XNextEvent(dpy, &xev);
 
     				if(handle_xevent(&xev) != 0) {
-                        printf("handle_xevent failed");
+                        printf("handle_xevent failed\n");
     					goto end;
     				}
     				if (!tryToPrintDevice())
     				{
-                        printf("tryToPrintDevice failed");
+                        printf("tryToPrintDevice failed\n");
     				    goto end;
     				}
     			}
