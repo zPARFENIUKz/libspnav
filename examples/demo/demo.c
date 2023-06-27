@@ -289,7 +289,7 @@ bool buttonWasPressed()
     		FD_ZERO(&rdset);
     		FD_SET(ssock, &rdset);
 
-    		//while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
+    		while(select(maxfd + 1, &rdset, 0, 0, 0) == -1 && errno == EINTR);
 
 
     		/* XXX: handle any pending spacenav events */
