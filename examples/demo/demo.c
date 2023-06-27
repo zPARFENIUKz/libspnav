@@ -20,7 +20,7 @@
 
 const char *spaceballInfoDirectoryFilePath = "spaceballs/info/";
 const char *spaceballSpnavrcDirectoryFilePath = "spaceballs/spnavrcs/";
-char prevDevice[128] = "\0";
+char prevDevice[512];
 
 void gen_textures(void);
 void gen_scene(void);
@@ -41,7 +41,7 @@ unsigned int scene;
 bool isPrintedAboutDevice = false;
 bool isPrintedAboutConnectDevice = false;
 int xsock, ssock, maxfd;
-char buf[256] = "\0";
+char buf[256];
 spnav_event sev;
 int demoNumber = 1;
 pid_t spacenavdPid = 0;
@@ -60,8 +60,8 @@ void stopSpacenavd(void)
 }
 
 bool isThereSpnavrcForDevice(const char *deviceName) {
-    char spnavrcFilePath[128] = "\0";
-    
+    char spnavrcFilePath[128];
+    spnavrcFilePath[0] = "\0";
     strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
     strcat(spnavrcFilePath, deviceName);
     strcat(spnavrcFilePath, "/spnavrc");
@@ -101,7 +101,8 @@ void restartSpacenavdWithSpnavrc(const char *spnavrcFilePath)
 
 void restartSpacenavd(const char* deviceName) 
 {
-        char buffer[128] = "\0";
+        char buffer[128];
+        buffer[0] = "\0";
         getcwd(buffer, sizeof buffer);
         strcat(buffer, "/spacenavd/spacenavd");
 
@@ -110,7 +111,8 @@ void restartSpacenavd(const char* deviceName)
         sleep(1);
         if (isThereSpnavrcForDevice(deviceName)) 
         {
-            char spnavrcFilePath[128] = "\0";
+            char spnavrcFilePath[128];
+            spnavrcFilePath[0] = "\0";
             strcat(spnavrcFilePath, spaceballSpnavrcDirectoryFilePath);
             strcat(spnavrcFilePath, deviceName);
             strcat(spnavrcFilePath, "/spnavrc");
@@ -129,7 +131,8 @@ void restartSpacenavd(const char* deviceName)
 
 void printDeviceInfo(const char* deviceName) 
 {
-    char finalPath[128] = "\0";
+    char finalPath[128];
+    finalPath[0] = "\0";
     strcat(finalPath, spaceballInfoDirectoryFilePath);
     strcat(finalPath, deviceName);
     strcat(finalPath, ".txt");
@@ -142,9 +145,11 @@ void printDeviceInfo(const char* deviceName)
     }
     const unsigned MAX_LENGTH = 256;
     char buffer[MAX_LENGTH];
+    buffer[0] = "\0";
     while (fgets(buffer, MAX_LENGTH, fp)) 
     {
         printf("%s\n", buffer);
+        buffer[0] = "\0";
     }
     fclose(fp);
 }
@@ -172,10 +177,10 @@ bool tryToPrintConnectDeviceMessage()
     if (isPrintedAboutConnectDevice) return true;
     system("clear");
     int i;
-    for (i = 0; i < 20; ++i) {
+    for (i = 0; i < 30; ++i) {
             printf("\n");
         }
-    for (i = 0; i < 5; ++i) {
+    for (i = 0; i < 7; ++i) {
             printf("\t");
     }
     printf("Connect your device...\n");
@@ -285,6 +290,7 @@ bool buttonWasPressed()
 int main(void)
 {
     restartSpacenavd("dfdg");
+    prevDevice[0] = "\0";
     for (;;)
     {
         openConnection();
