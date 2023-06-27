@@ -152,7 +152,7 @@ void printDeviceInfo(const char* deviceName)
 }
 
 bool tryToPrintDevice() {
-    buf[0] = "\0";
+    sleep(1);
     if (spnav_dev_name(buf, sizeof buf) == -1) return false;
     if (isPrintedAboutDevice) return true;
     //system("clear");
@@ -292,26 +292,19 @@ int main(void)
     prevDevice[0] = "\0";
     for (;;)
     {
-        sleep(1);
         openConnection();
-        spnav_dev_name(buf, sizeof buf);
-        if (isPrintedAboutDevice || tryToPrintDevice()) 
+        //spnav_dev_name(buf, sizeof buf);
+        if (tryToPrintDevice())
         {
-            if (tryToPrintDevice()) 
+            if (buttonWasPressed())
             {
-                if (buttonWasPressed())
-                {
-                    prepareForDemo();
-                } else
-                {
-                    continue;
-                }
-            } else 
+                prepareForDemo();
+            } else
             {
-                tryToPrintConnectDeviceMessage();
                 continue;
             }
-        } else 
+
+        } else
         {
             tryToPrintConnectDeviceMessage();
             continue;
